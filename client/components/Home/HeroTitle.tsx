@@ -9,7 +9,7 @@ const styles = {
 export const HeroTitle = () => {
   return (
       <h1 className={styles.container}>
-        <span  className={styles.title}>Hot Users</span>
+        <span  className={styles.title}>Top Sellers</span>
         <span  className={styles.subTitle}>Of Our NFT Marketplace</span>
       </h1>
   )

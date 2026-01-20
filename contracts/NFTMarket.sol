@@ -25,6 +25,29 @@ contract NFTMarket is ReentrancyGuard {
         bool sold
     );
 
+    event AuctionClaimed(
+        uint256 indexed auctionId,
+        address indexed winner,
+        uint256 amount
+    );
+
+    event AuctionCreated(
+        uint256 indexed auctionId,
+        address indexed nftContract,
+        uint256 indexed tokenId,
+        address creator,
+        uint256 startPrice,
+        uint256 startTime,
+        uint256 endTime
+    );
+
+    event NewBid(
+        uint256 indexed auctionId,
+        address indexed bidder,
+        uint256 amount
+    );
+
+
     using Counters for Counters.Counter;
     Counters.Counter private s_itemIds;
     Counters.Counter private s_itemsSold;
@@ -43,6 +66,12 @@ contract NFTMarket is ReentrancyGuard {
         uint256 createAt;
         bool sold;
     }
+
+    
+
+    mapping(uint256 => AuctionItem) private s_Auctions;
+    Counters.Counter private s_auctionIds;
+
 
     mapping(uint256 => MarketItem) private s_MarketItems;
 
@@ -181,6 +210,105 @@ contract NFTMarket is ReentrancyGuard {
             false
         );
     }
+
+    
+
+
+    struct AuctionItem {
+        uint256 itemId;
+        address nftContract;
+        uint256 tokenId;
+        address payable creator;
+        uint256 startPrice;       // starting price
+        uint256 highestBid;       // current highest bid
+        address payable highestBidder;
+        uint256 startTime;
+        uint256 endTime;
+        bool active;              // is auction ongoing
+        bool claimed;             // has NFT been claimed by winner
+    }
+
+    function createAuction(
+        address nftContract,
+        uint256 tokenId,
+        uint256 startPrice,
+        uint256 durationInSeconds
+    ) public nonReentrant {
+        require(startPrice > 0, "Start price must be greater than 0");
+
+        s_auctionIds.increment();
+        uint256 auctionId = s_auctionIds.current();
+        
+        IERC721(nftContract).transferFrom(msg.sender, address(this), tokenId);
+
+        s_Auctions[auctionId] = AuctionItem({
+            itemId: auctionId,
+            nftContract: nftContract,
+            tokenId: tokenId,
+            creator: payable(msg.sender),
+            startPrice: startPrice,
+            highestBid: 0,
+            highestBidder: payable(address(0)),
+            startTime: block.timestamp,
+            endTime: block.timestamp + durationInSeconds,
+            active: true,
+            claimed: false
+        });
+
+        emit AuctionCreated(
+            auctionId, 
+            nftContract, 
+            tokenId, 
+            msg.sender, 
+            startPrice, 
+            block.timestamp, 
+            block.timestamp + durationInSeconds);
+    }
+
+    
+
+
+    function placeBid(uint256 auctionId) public payable nonReentrant {
+        AuctionItem storage auction = s_Auctions[auctionId];
+        require(auction.active, "Auction is not active");
+        require(block.timestamp < auction.endTime, "Auction ended");
+        uint256 minBid = auction.highestBid > 0 ? auction.highestBid + 0.01 ether : auction.startPrice;
+        require(msg.value >= minBid, "Bid too low");
+
+        // Refund previous bidder
+        if (auction.highestBidder != address(0)) {
+            auction.highestBidder.transfer(auction.highestBid);
+        }
+
+        auction.highestBid = msg.value;
+        auction.highestBidder = payable(msg.sender);
+
+        emit NewBid(auctionId, msg.sender, msg.value);
+    }
+
+    function claimAuction(uint256 auctionId) public nonReentrant {
+        AuctionItem storage auction = s_Auctions[auctionId];
+        require(block.timestamp >= auction.endTime, "Auction not ended yet");
+        require(!auction.claimed, "Already claimed");
+
+        auction.claimed = true;
+        auction.active = false;
+
+        if (auction.highestBidder != address(0)) {
+            // Transfer NFT to winner
+            IERC721(auction.nftContract).transferFrom(address(this), auction.highestBidder, auction.tokenId);
+            // Pay creator
+            auction.creator.transfer(auction.highestBid);
+        } else {
+            // No bids, return NFT to creator
+            IERC721(auction.nftContract).transferFrom(address(this), auction.creator, auction.tokenId);
+        }
+
+        emit AuctionClaimed(auctionId, auction.highestBidder, auction.highestBid);
+    }
+
+    
+
 
 
 
