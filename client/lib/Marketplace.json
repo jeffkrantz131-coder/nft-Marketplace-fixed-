@@ -54,6 +54,92 @@
       {
         "type": "event",
         "anonymous": false,
+        "name": "AuctionClaimed",
+        "inputs": [
+          {
+            "type": "uint256",
+            "name": "auctionId",
+            "indexed": true
+          },
+          {
+            "type": "address",
+            "name": "winner",
+            "indexed": true
+          },
+          {
+            "type": "uint256",
+            "name": "amount",
+            "indexed": false
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "anonymous": false,
+        "name": "AuctionCreated",
+        "inputs": [
+          {
+            "type": "uint256",
+            "name": "auctionId",
+            "indexed": true
+          },
+          {
+            "type": "address",
+            "name": "nftContract",
+            "indexed": true
+          },
+          {
+            "type": "uint256",
+            "name": "tokenId",
+            "indexed": true
+          },
+          {
+            "type": "address",
+            "name": "creator",
+            "indexed": false
+          },
+          {
+            "type": "uint256",
+            "name": "startPrice",
+            "indexed": false
+          },
+          {
+            "type": "uint256",
+            "name": "startTime",
+            "indexed": false
+          },
+          {
+            "type": "uint256",
+            "name": "endTime",
+            "indexed": false
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "anonymous": false,
+        "name": "NewBid",
+        "inputs": [
+          {
+            "type": "uint256",
+            "name": "auctionId",
+            "indexed": true
+          },
+          {
+            "type": "address",
+            "name": "bidder",
+            "indexed": true
+          },
+          {
+            "type": "uint256",
+            "name": "amount",
+            "indexed": false
+          }
+        ]
+      },
+      {
+        "type": "event",
+        "anonymous": false,
         "name": "marketItemNFT",
         "inputs": [
           {
@@ -117,6 +203,44 @@
           {
             "type": "uint256",
             "name": "itemId"
+          }
+        ],
+        "outputs": []
+      },
+      {
+        "type": "function",
+        "name": "claimAuction",
+        "constant": false,
+        "payable": false,
+        "inputs": [
+          {
+            "type": "uint256",
+            "name": "auctionId"
+          }
+        ],
+        "outputs": []
+      },
+      {
+        "type": "function",
+        "name": "createAuction",
+        "constant": false,
+        "payable": false,
+        "inputs": [
+          {
+            "type": "address",
+            "name": "nftContract"
+          },
+          {
+            "type": "uint256",
+            "name": "tokenId"
+          },
+          {
+            "type": "uint256",
+            "name": "startPrice"
+          },
+          {
+            "type": "uint256",
+            "name": "durationInSeconds"
           }
         ],
         "outputs": []
@@ -523,6 +647,20 @@
             "name": "total"
           }
         ]
+      },
+      {
+        "type": "function",
+        "name": "placeBid",
+        "constant": false,
+        "stateMutability": "payable",
+        "payable": true,
+        "inputs": [
+          {
+            "type": "uint256",
+            "name": "auctionId"
+          }
+        ],
+        "outputs": []
       },
       {
         "type": "function",

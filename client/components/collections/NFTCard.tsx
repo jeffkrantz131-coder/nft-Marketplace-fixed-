@@ -40,7 +40,7 @@ export const NFTCard: FC<IItem> = (item) => {
           <div className="w-[50px] h-[50px] border-2 rounded-full border-blue-500">
             <Image
               unoptimized
-              src={`https://joeschmoe.io/api/v1/${creator}`}
+              src={`../`}
               alt="avatar"
               className="rounded-full"
               layout="responsive"

@@ -47,21 +47,22 @@ const NFTDetails:NextPage = () => {
          <h2 className="bold text-blue-600 text-4xl text-center">Details</h2>
          <div className="grid grid-cols-[1fr_350px] gap-[20px] justify-center items-center">
            <div>
-             <h4 className="py-3"><span className="bold text-pink-600 text-lg">Item-ID:</span> {ethers.BigNumber.from(nft.itemId).toNumber()}</h4>
+             {/* <h4 className="py-3"><span className="bold text-pink-600 text-lg">Item-ID:</span> {ethers.BigNumber.from(nft.itemId).toNumber()}</h4> */}
              <h4 className="py-3"><span className="bold text-pink-600 text-lg">Name:</span> {nft.name}</h4> 
-             <h4 className="py-3 flex items-center">
+             {/* <h4 className="py-3 flex items-center">
               <span className="bold text-pink-600 text-lg pr-2">Creator:</span>
               <a className="text-blue-500 flex" target="_blank" href={`https://mumbai.polygonscan.com/address/${nft.seller}`}> <span>{nft.seller}</span> <ExternalLinkIcon className="w-5 h-5" /></a>
-             </h4> 
+             </h4>  */}
              <h4 className="py-3"><span className="bold text-pink-600 text-lg">Created At:</span> {getFormatDate(nft.createAt)}</h4> 
              <h4 className="py-3"><span className="bold text-pink-600 text-lg">Description:</span> {nft.description}</h4>              
-             <h4 className="py-3 flex items-center">
+             {/* <h4 className="py-3 flex items-center">
               <span className="bold text-pink-600 text-lg pr-2">Owner:</span>
               {nft.sold ?
                 <a className="text-blue-500 flex" target="_blank" href={`https://mumbai.polygonscan.com/address/${nft.owner}`}> <span>{nft.owner}</span> <ExternalLinkIcon className="w-5 h-5" /></a>
                 : <>{nft.owner}</>
               }
-             </h4>
+             </h4> */}
+             <h4 className="py-3"><span className="bold text-pink-600 text-lg">Creator:</span> {nft.creator}</h4>
              <h4 className="py-3"><span className="bold text-pink-600 text-lg">Price:</span> {nft.price} eth</h4> 
              <h4 className="py-3"><span className="bold text-pink-600 text-lg">Sold:</span> {nft.sold ? 'sold out' : 'unsold'}</h4> 
              <h4 className="py-3"><span className="bold text-pink-600 text-lg">Token-ID:</span> {ethers.BigNumber.from(nft.tokenId).toNumber()}</h4>

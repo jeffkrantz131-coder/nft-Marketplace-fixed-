@@ -160,12 +160,12 @@ contract NFTMarket is ReentrancyGuard {
         uint256 itemId,
         uint256 newPrice
     ) public payable nonReentrant {
-        // 1️⃣ Price validation
+        
         if (newPrice == 0) {
             revert NFTMarket__Price({ message: "Price must be above zero" });
         }
 
-        // 2️⃣ Listing fee check
+        
         if (msg.value != s_listingFee) {
             revert NFTMarket__ListingFee({
                 requiered: s_listingFee,
@@ -181,17 +181,17 @@ contract NFTMarket is ReentrancyGuard {
         // 4️⃣ Item must be sold before reselling
         require(item.sold == true, "Item is already listed");
 
-        // 5️⃣ Update item state
+        
         item.sold = false;
         item.price = newPrice;
         item.seller = payable(msg.sender);
         item.owner = payable(address(0));
         item.createAt = block.timestamp;
 
-        // 6️⃣ FIXED: decrement global counter
+        
         s_itemsSold.decrement();
 
-        // 7️⃣ Transfer NFT back to marketplace
+        
         IERC721(nftContract).transferFrom(
             msg.sender,
             address(this),
@@ -275,41 +275,73 @@ contract NFTMarket is ReentrancyGuard {
         uint256 minBid = auction.highestBid > 0 ? auction.highestBid + 0.01 ether : auction.startPrice;
         require(msg.value >= minBid, "Bid too low");
 
-        // Refund previous bidder
-        if (auction.highestBidder != address(0)) {
-            auction.highestBidder.transfer(auction.highestBid);
-        }
+        uint256 previousBid = auction.highestBid;
+        address payable previousBidder = auction.highestBidder;
 
+        
         auction.highestBid = msg.value;
         auction.highestBidder = payable(msg.sender);
 
-        emit NewBid(auctionId, msg.sender, msg.value);
+        
+        if (previousBidder != address(0)) {
+            (bool success, ) = previousBidder.call{ value: previousBid }("");
+            require(success, "Refund failed");
     }
+
+        emit NewBid(
+            auctionId, 
+            msg.sender, 
+            msg.value);
+    }
+
 
     function claimAuction(uint256 auctionId) public nonReentrant {
         AuctionItem storage auction = s_Auctions[auctionId];
+
         require(block.timestamp >= auction.endTime, "Auction not ended yet");
         require(!auction.claimed, "Already claimed");
 
+        
         auction.claimed = true;
         auction.active = false;
 
         if (auction.highestBidder != address(0)) {
-            // Transfer NFT to winner
-            IERC721(auction.nftContract).transferFrom(address(this), auction.highestBidder, auction.tokenId);
-            // Pay creator
-            auction.creator.transfer(auction.highestBid);
-        } else {
-            // No bids, return NFT to creator
-            IERC721(auction.nftContract).transferFrom(address(this), auction.creator, auction.tokenId);
+            
+            IERC721(auction.nftContract).transferFrom(
+                address(this),
+                auction.highestBidder,
+                auction.tokenId
+            );
+
+          
+            (bool success, ) = auction.creator.call{ value: auction.highestBid }("");
+            require(success, "Payment to creator failed");
+            } else {
+            
+            IERC721(auction.nftContract).transferFrom(
+                address(this),
+                auction.creator,
+                auction.tokenId
+            );
         }
 
-        emit AuctionClaimed(auctionId, auction.highestBidder, auction.highestBid);
+            emit AuctionClaimed(
+                auctionId,
+                auction.highestBidder,
+                auction.highestBid
+        );
     }
 
-    
+    function getAllAuctions() public view returns (AuctionItem[] memory) {
+    uint256 totalAuctions = s_auctionIds.current();
+    AuctionItem[] memory auctions = new AuctionItem[](totalAuctions);
 
+    for (uint256 i = 0; i < totalAuctions; i++) {
+        auctions[i] = s_Auctions[i + 1];
+    }
 
+    return auctions;
+    }
 
 
     // function getMarketItems() public view returns (MarketItem[] memory) {
@@ -532,3 +564,6 @@ contract NFTMarket is ReentrancyGuard {
         return items;
     }
 }
+
+
+    
