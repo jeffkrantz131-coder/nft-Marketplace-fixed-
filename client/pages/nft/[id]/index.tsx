@@ -157,7 +157,7 @@ const NFTItem: NextPage = () => {
               <div className="w-[50px] h-[50px] border-2 rounded-full border-blue-500">
                 <Image
                   unoptimized
-                  src={`https://joeschmoe.io/api/v1/${nft.creator}`}
+                  src={`${nft.creator}`}
                   alt="avatar"
                   className="rounded-full"
                   layout="responsive"
@@ -197,7 +197,7 @@ const NFTItem: NextPage = () => {
                     <div className="w-[50px] h-[50px] border-2 rounded-full border-blue-500">
                       <Image
                         unoptimized
-                        src={`https://joeschmoe.io/api/v1/${nft.owner}`}
+                        src={`${nft.owner}`}
                         alt="avatar"
                         className="rounded-full"
                         layout="responsive"
@@ -218,7 +218,7 @@ const NFTItem: NextPage = () => {
                 <div className="w-[50px] h-[50px] border-2 rounded-full border-blue-500">
                   <Image
                     unoptimized
-                    src={`https://joeschmoe.io/api/v1/${nft.creator}`}
+                    src={`${nft.creator}`}
                     alt="avatar"
                     className="rounded-full"
                     layout="responsive"
@@ -239,14 +239,14 @@ const NFTItem: NextPage = () => {
               </div>
             </Link>
             
-            {!nft.sold && nft.creator === signer &&
+            {nft.sold && nft.owner === signer &&
               <div className="flex flex-col gap-4 w-[400px]">
                 <Link href={`/nft/${id}/details/startauction`}>
-              <div className="border-2 border-blue rounded-md w-[400px] p-4 cursor-pointer">
-                <h4 className="text-center text-xl">Auction</h4>
+                  <div className="border-2 border-blue rounded-md w-[400px] p-4 cursor-pointer bg-gradient-to-r from-[#fa1199] to-[#fa7111]">
+                    <h4 className="text-center text-xl">Auction</h4>
+                  </div>
+                </Link>
               </div>
-              </Link>
-            </div>
             
             }
 
@@ -264,17 +264,17 @@ const NFTItem: NextPage = () => {
 
               {nft.sold && nft.owner === signer && (
                 !txWait ? (
-                  <div className="flex flex-col gap-4 w-[400px]">
+                  <div className="flex flex-raw gap-4 w-[400px]">
                     <input
                       type="number"
                       placeholder="Enter price in ETH"
-                      className="p-3 rounded-md text-black"
+                      className="p-3 rounded-md text-black w-48"
                       value={resellPrice}
                       onChange={(e) => setResellPrice(e.target.value)}
                     />
 
                     <button
-                      className="bold text-xl bg-gradient-to-r from-[#fa1199] to-[#fa7111] rounded-md p-4 cursor-pointer"
+                      className="bold text-xl bg-gradient-to-r from-[#fa1199] to-[#fa7111] rounded-md p-4 cursor-pointer flex-1"
                       onClick={resellNft}
                     >
                       Sell

@@ -32,64 +32,75 @@ const NFTDetails:NextPage = () => {
    }
   },[id]);
   
-  const getFormatDate = (unformatDate:string):string => {
-    const date = new Date(parseInt(unformatDate) * 1000 );
-    return `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`;
-  } 
-
+  
   const startAuction = async () => {
-    if (!startingPrice || !auctionDuration || !nft) return;
+  if (!startingPrice || !auctionDuration || !nft) {
+    alert("Please enter starting price, duration, and select an NFT");
+    return;
+  }
 
-    try {
-      setLoading(true);
+  try {
+    setLoading(true);
 
-      const provider = new ethers.providers.Web3Provider(
-        (window as any).ethereum,
-        "any"
-      );
-      const signer = provider.getSigner();
+    // 1️⃣ Provider & Signer
+    const provider = new ethers.providers.Web3Provider((window as any).ethereum, "any");
+    const signer = provider.getSigner();
+    const signerAddress = await signer.getAddress();
+    
+    // 2️⃣ Contracts
+    const marketContract = await getMarketContract(provider, signer);
+    const nftContract = await getNFTContract(provider, signer);
 
-      const marketContract = await getMarketContract(provider, signer);
-      const nftContract = await getNFTContract(provider, signer);
-
-      const tokenId = nft.tokenId;
-
-      const owner = await nftContract.ownerOf(tokenId);
-      const signerAddress = await signer.getAddress();
-
-      console.log("NFT owner:", owner);
-      console.log("Signer:", signerAddress);
-      console.log("Market:", marketContract.address);
-
-      // ✅ Only approve if user owns the NFT
-      if (owner.toLowerCase() === signerAddress.toLowerCase()) {
-        const approveTx = await nftContract.approve(
-          marketContract.address,
-          tokenId
-        );
-        await approveTx.wait();
-      }
-
-      const startPriceWei = ethers.utils.parseEther(startingPrice);
-      const durationSeconds = Number(auctionDuration) * 60 * 60;
-
-      const tx = await marketContract.createAuction(
-        nftContract.address,
-        tokenId,
-        startPriceWei,
-        durationSeconds
-      );
-
-      await tx.wait();
-      router.push("/auction");
-
-    } catch (err: any) {
-      console.error(err);
-      alert(err?.reason || "Auction creation failed");
-    } finally {
-      setLoading(false);
+    const tokenId = nft.tokenId;
+    
+    
+    const owner = await nftContract.ownerOf(tokenId);
+    // 3️⃣ Check ownership
+    if (owner.toLowerCase() !== signerAddress.toLowerCase()) {
+      alert("Only the owner can start an auction");
+      return;
     }
-  };
+    
+    // 4️⃣ Approve market contract if needed
+    const approvedAddress = await nftContract.getApproved(tokenId);
+    if (approvedAddress.toLowerCase() !== marketContract.address.toLowerCase()) {
+      const approveTx = await nftContract.approve(marketContract.address, tokenId);
+      await approveTx.wait();
+    }
+
+    // 5️⃣ Convert inputs
+    const startPriceWei = ethers.utils.parseEther(startingPrice);
+    const durationSeconds = Number(auctionDuration) * 60 * 60;
+
+    if (startPriceWei.lte(0)) {
+      alert("Start price must be greater than 0");
+      return;
+    }
+    if (durationSeconds <= 0) {
+      alert("Duration must be greater than 0");
+      return;
+    }
+
+    // 6️⃣ Call createAuction
+    const tx = await marketContract.createAuction(
+      nftContract.address,
+      tokenId,
+      startPriceWei,
+      durationSeconds
+    );
+    await tx.wait();
+
+    // 7️⃣ Redirect
+    router.push("/auction");
+
+  } catch (err: any) {
+    console.error("Auction creation failed:", err);
+    alert(err?.reason || err?.message || "Auction creation failed");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
 
 
