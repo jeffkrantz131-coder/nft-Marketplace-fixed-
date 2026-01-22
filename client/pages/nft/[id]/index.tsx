@@ -241,7 +241,7 @@ const NFTItem: NextPage = () => {
             
             {!nft.sold && nft.creator === signer &&
               <div className="flex flex-col gap-4 w-[400px]">
-                <Link href={`/nft/${id}/details/auction`}>
+                <Link href={`/nft/${id}/details/startauction`}>
               <div className="border-2 border-blue rounded-md w-[400px] p-4 cursor-pointer">
                 <h4 className="text-center text-xl">Auction</h4>
               </div>

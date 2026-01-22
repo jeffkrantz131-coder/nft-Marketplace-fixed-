@@ -37,10 +37,67 @@ const NFTDetails:NextPage = () => {
     return `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`;
   } 
 
+  const startAuction = async () => {
+    if (!startingPrice || !auctionDuration || !nft) return;
+
+    try {
+      setLoading(true);
+
+      const provider = new ethers.providers.Web3Provider(
+        (window as any).ethereum,
+        "any"
+      );
+      const signer = provider.getSigner();
+
+      const marketContract = await getMarketContract(provider, signer);
+      const nftContract = await getNFTContract(provider, signer);
+
+      const tokenId = nft.tokenId;
+
+      const owner = await nftContract.ownerOf(tokenId);
+      const signerAddress = await signer.getAddress();
+
+      console.log("NFT owner:", owner);
+      console.log("Signer:", signerAddress);
+      console.log("Market:", marketContract.address);
+
+      // ✅ Only approve if user owns the NFT
+      if (owner.toLowerCase() === signerAddress.toLowerCase()) {
+        const approveTx = await nftContract.approve(
+          marketContract.address,
+          tokenId
+        );
+        await approveTx.wait();
+      }
+
+      const startPriceWei = ethers.utils.parseEther(startingPrice);
+      const durationSeconds = Number(auctionDuration) * 60 * 60;
+
+      const tx = await marketContract.createAuction(
+        nftContract.address,
+        tokenId,
+        startPriceWei,
+        durationSeconds
+      );
+
+      await tx.wait();
+      router.push("/auction");
+
+    } catch (err: any) {
+      console.error(err);
+      alert(err?.reason || "Auction creation failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+
+
   return (
     <div className="bg-gradient text-white p-5">
       <Head>
-        <title>NFT Details {id && id}</title>
+        <title>Auction Details {id && id}</title>
         <meta name="description" content="NFT Details" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -71,7 +128,7 @@ const NFTDetails:NextPage = () => {
 
                 <button
                     className="bg-gradient-to-r from-[#1199fa] to-[#11d0fa] rounded-3xl p-2 w-full text-black font-bold hover:opacity-90 mt-3"
-                    // onClick={startAuction}
+                    onClick={startAuction}
                     disabled={loading}
                 >
                     {loading ? "Starting Auction..." : "Start Auction"}

@@ -15,6 +15,12 @@ export const NavMenu: NextPage = () => {
   return (
     <ul className={styles.menu}>
       <li>
+        <Link href="/auction">
+          <a className={styles.menuItemLink}>Auction</a>
+        </Link>
+      </li>
+
+      <li>
         <Link href="/explore">
           <a className={styles.menuItemLink}>Explore</a>
         </Link>

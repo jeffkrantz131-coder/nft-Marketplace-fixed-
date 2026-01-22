@@ -333,16 +333,19 @@ contract NFTMarket is ReentrancyGuard {
     }
 
     function getAllAuctions() public view returns (AuctionItem[] memory) {
-    uint256 totalAuctions = s_auctionIds.current();
-    AuctionItem[] memory auctions = new AuctionItem[](totalAuctions);
+        uint256 totalAuctions = s_auctionIds.current();
+        AuctionItem[] memory auctions = new AuctionItem[](totalAuctions);
 
-    for (uint256 i = 0; i < totalAuctions; i++) {
-        auctions[i] = s_Auctions[i + 1];
+        for (uint256 i = 0; i < totalAuctions; i++) {
+            auctions[i] = s_Auctions[i + 1];
+        }
+
+        return auctions;
     }
 
-    return auctions;
+    function getAuction(uint256 auctionId) public view returns (AuctionItem memory) {
+        return s_Auctions[auctionId];
     }
-
 
     // function getMarketItems() public view returns (MarketItem[] memory) {
     //     uint256 itemsCount = s_itemIds.current();
