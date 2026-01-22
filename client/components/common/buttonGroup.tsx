@@ -12,9 +12,9 @@ export type ButtonGroupItemType = {
 }
 
 const styles = {
-  buttonGroup: 'flex items-center justify-center',
-  buttonGroupItem : 'p-2 rounded-3xl cursor-pointer bg-[#0f1c39] w-[130px] mx-[10px]',
-  buttonGroupActive: 'bg-gradient-to-r from-[#1199fa] to-[#11d0fa]',
+  buttonGroup: 'flex items-center justify-center font-bold',
+  buttonGroupItem : 'p-2 rounded-3xl cursor-pointer bg-[#0f1c39] w-[130px] mx-[10px] font-bold',
+  buttonGroupActive: 'bg-gradient-to-r from-[#1199fa] to-[#11d0fa] font-bold',
 }
 
 export const ButtonGroup:FC<IButtonGroup> = ({ items, handleButtonGroup }) => {

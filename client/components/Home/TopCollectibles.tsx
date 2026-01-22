@@ -37,7 +37,7 @@ export const TopCollectibles = () => {
       isLoading ? (
            <Loader className='relative w-[150px] h-[150px] bg-gradient my-0 mx-auto' size={150} /> ) : (
         <div className='relative w-[75%] h-[100%] bg-gradient my-0 mx-auto'>
-          <h2 className='text-white text-center text-[50px] mb-5'>Top Collectibles</h2>
+          <h2 className='text-white text-center text-[50px] mb-5 font-bold'>Top Collectibles</h2>
           <CollectiblesMenu/>
           <NFTCardItems items={items} message="Connect your wallet" isLoading={isLoading}/>
         </div>

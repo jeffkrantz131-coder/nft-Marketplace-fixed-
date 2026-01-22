@@ -3430,6 +3430,11 @@ react-native-fetch-api@^2.0.0:
   dependencies:
     p-defer "^3.0.0"
 
+react-parallax-tilt@^1.7.316:
+  version "1.7.316"
+  resolved "https://registry.yarnpkg.com/react-parallax-tilt/-/react-parallax-tilt-1.7.316.tgz#75f569d70ce8bd275612a7c6b6d27871a0527ae8"
+  integrity sha512-lGsPKZUTPlyUz3OoormVlMIqdBIWTtTII79pNko61qER5dhMLXMXekvZvrut78FHthkb7VmwPy/n2XmuDNLnXQ==
+
 react-toastify@^9.0.7:
   version "9.0.7"
   resolved "https://registry.npmjs.org/react-toastify/-/react-toastify-9.0.7.tgz"

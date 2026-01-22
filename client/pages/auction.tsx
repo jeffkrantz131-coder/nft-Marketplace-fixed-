@@ -115,6 +115,7 @@ const AuctionsPage: NextPage = () => {
   const [loading, setLoading] = useState(true);
   const [bidAmounts, setBidAmounts] = useState<{ [key: number]: string }>({});
   const [signerAddress, setSignerAddress] = useState("");
+  const [timeLeft, setTimeLeft] = useState<{ [key: number]: number }>({});
 
   // Load auctions
   useEffect(() => {
@@ -208,6 +209,30 @@ const AuctionsPage: NextPage = () => {
     }
   };
 
+  const formatTime = (seconds: number) => {
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = seconds % 60;
+  return `${h.toString().padStart(2,"0")}:${m.toString().padStart(2,"0")}:${s.toString().padStart(2,"0")}`;
+};
+
+  useEffect(() => {
+  const interval = setInterval(() => {
+    setTimeLeft(prev => {
+      const updated: { [key: number]: number } = {};
+      auctions.forEach(a => {
+        const remaining = Math.max(0, Math.floor(a.endTime - Date.now() / 1000));
+        updated[a.itemId] = remaining;
+      });
+      return updated;
+    });
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, [auctions]);
+
+const activeAuctions = auctions.filter(a => a.active && !a.claimed);
+
   return (
     <div className="bg-gradient text-white p-5">
       <Head>
@@ -215,18 +240,25 @@ const AuctionsPage: NextPage = () => {
       </Head>
 
       <h1 className="text-4xl font-bold text-center text-blue-500 mb-6">
-        Live NFT Auctions
+        Active Auctions
       </h1>
 
       {loading ? (
         <Loader className="w-[400px] h-[400px] mx-auto" size={400} />
       ) : (
-        <div className="grid grid-cols-3 gap-6 w-[90%] mx-auto">
-          {auctions.map((a) => {
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 w-full px-5 mx-auto">
+          {activeAuctions.length === 0 && (
+            <p className="text-center text-gray-400 col-span-full">
+              No active auctions right now.
+            </p>
+          )}
+
+          {activeAuctions.map(a => {
             const ended = Date.now() / 1000 > a.endTime;
 
             return (
-              <div key={a.itemId} className="bg-[#111] p-4 rounded-xl shadow-lg">
+              <div key={a.itemId} className="bg-gradient-to-b rounded-3xl shadow-xl border border-[#333] p-6 hover:scale-105 transition-transform duration-300 flex flex-col">
+                <div className="w-full max-w-[500px] mb-4">
                 <Image
                   unoptimized
                   src={a.image || ""}
@@ -238,15 +270,29 @@ const AuctionsPage: NextPage = () => {
                   blurDataURL={DATA_URL}
                   placeholder="blur"
                 />
+                </div>
 
                 <h2 className="text-xl font-bold mt-2">{a.name}</h2>
                 <p>Token ID: {a.tokenId}</p>
-                <p>Start Price: {a.startPrice} ETH</p>
-                <p>Highest Bid: {a.highestBid} ETH</p>
-                <p>Highest Bidder: {shortenAddress(a.highestBidder)}</p>
-                <p>
-                  Ends: {new Date(a.endTime * 1000).toLocaleString()}
-                </p>
+
+                <div className="flex flex-col w-full mb-4">
+                  <div className="flex justify-between text-white mb-1">
+                    <span>Start Price:</span>
+                    <span>{a.startPrice} ETH</span>
+                  </div>
+                  <div className="flex justify-between text-white mb-1">
+                    <span>Highest Bid:</span>
+                    <span>{a.highestBid} ETH</span>
+                  </div>
+                  <div className="flex justify-between text-white mb-1">
+                    <span>Highest Bidder:</span>
+                    <span>{shortenAddress(a.highestBidder)}</span>
+                  </div>
+                  <div className="flex justify-between text-gray-400 text-sm mb-1">
+                    <span>Ends in:</span>
+                    <span>{formatTime(timeLeft[a.itemId])}</span>
+                  </div>
+                </div>
 
                 {/* Bid Section */}
                 {a.active && !ended && (
@@ -254,7 +300,7 @@ const AuctionsPage: NextPage = () => {
                     <input
                       type="number"
                       placeholder="Your bid (ETH)"
-                      className="p-2 text-black w-full rounded-md"
+                      className="p-2 text-black w-full rounded-md focus:outline-none"
                       onChange={(e) =>
                         setBidAmounts({ ...bidAmounts, [a.itemId]: e.target.value })
                       }

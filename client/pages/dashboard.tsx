@@ -137,12 +137,12 @@ const Dashboard:NextPage = () => {
       {!isConnected ? (<h2 className='bg-gradient text-white p-10'>Please connect your wallet</h2>) : (<div>
       <section className='bg-gradient text-white grid grid-cols-[30%_70%] w-[80vw] items-center justify-center my-0 mx-auto'>
         <div className='flex flex-col items-center justify-evenly text-xl'>
-          <h3 className='py-2'>Address: {signer && shortenAddress(signer!)}</h3>
-          <h3 className='py-2'>Balance: {balance} eth</h3>
+          <h3 className='py-2 font-bold'>Address: {signer && shortenAddress(signer!)}</h3>
+          <h3 className='py-2 font-bold'>Balance: {balance} eth</h3>
         </div>
         <div className='flex flex-col items-center justify-center'>
           <div className='py-4'>
-            <h2 className='text-3xl text-pink-600 text-center py-3'>NFT</h2>  
+            <h2 className='text-3xl text-pink-600 text-center py-3 font-bold'>NFT</h2>  
             <hr className='bg-pink-400' />
           </div>
           <div className='flex items-center justify-center'>
@@ -150,7 +150,7 @@ const Dashboard:NextPage = () => {
           </div>
         </div>
       </section>
-      <div className='bg-gradient text-white flex items-center justify-center pt-5'>
+      <div className='bg-gradient text-white flex items-center justify-center pt-5 font-bold'>
       { isLoading ? <Loader className='w-[200px] h-[200px]' size={300} />  : <NFTS NFTs={currentNFTItems} title={title} isLoading={isLoading}/>  }
       </div>
       </div>
