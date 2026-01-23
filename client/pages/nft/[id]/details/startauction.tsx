@@ -114,28 +114,33 @@ const NFTDetails:NextPage = () => {
       </Head>
     {
       !nft ? (<Loader className='w-[500px] h-[500px] mx-auto my-0 py-5' size={500} />)  :
-      (<section className="w-[80%] mx-auto my-0">
+      (<section className="w-[50%] mx-auto my-0">
          <h2 className="bold text-blue-600 text-4xl text-center mb-6">{nft.name}</h2>
-          <div className="grid grid-cols-[1fr_350px] gap-[20px] justify-center items-start">
+          <div className="grid grid-cols-[1fr_350px] gap-[20px] justify-center items-stretch">
             {/* Auction Input */}
-            <div className="flex flex-col gap-4 w-2/3">
-                <label className="font-bold text-pink-600">Starting Price (ETH)</label>
-                <input
+            <div className="flex flex-col gap-4 w-2/3 h-full justify-between">
+                <div>
+                    <label className="font-bold text-pink-600">Starting Price (ETH)</label>
+                  <input
                     type="number"
                     placeholder="Enter starting price"
-                    className="p-2 rounded-md text-black w-full"
+                    className="p-2 rounded-md text-black w-full focus:outline-none"
                     value={startingPrice}
                     onChange={(e) => setStartingPrice(e.target.value)}
-                />
-
-                <label className="font-bold text-pink-600">Auction Duration (Hours)</label>
-                <input
+                  />
+                </div>
+                
+                <div>
+                    <label className="font-bold text-pink-600">Auction Duration (Hours)</label>
+                    <input
                     type="number"
                     placeholder="Enter duration"
-                    className="p-2 rounded-md text-black w-full"
+                    className="p-2 rounded-md text-black w-full focus:outline-none"
                     value={auctionDuration}
                     onChange={(e) => setAuctionDuration(e.target.value)}
-                />
+                    />
+                </div>
+                
 
                 <button
                     className="bg-gradient-to-r from-[#1199fa] to-[#11d0fa] rounded-3xl p-2 w-full text-black font-bold hover:opacity-90 mt-3"
@@ -146,7 +151,7 @@ const NFTDetails:NextPage = () => {
                 </button>
                 </div>
             {/* NFT Image */}
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center h-full">
               <div
                 className="w-[350px] h-[350px] cursor-pointer hover:opacity-80"
                 onClick={() => setFullImage(true)}

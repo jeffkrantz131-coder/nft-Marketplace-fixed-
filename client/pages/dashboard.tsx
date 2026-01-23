@@ -142,7 +142,7 @@ const Dashboard:NextPage = () => {
         </div>
         <div className='flex flex-col items-center justify-center'>
           <div className='py-4'>
-            <h2 className='text-3xl text-pink-600 text-center py-3 font-bold'>NFT</h2>  
+            <h2 className='text-3xl text-blue-600 text-center py-3 font-bold'>NFT</h2>  
             <hr className='bg-pink-400' />
           </div>
           <div className='flex items-center justify-center'>
