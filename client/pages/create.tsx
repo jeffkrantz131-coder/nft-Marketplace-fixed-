@@ -222,32 +222,34 @@ const Create = () => {
                 <h2 className="text-white text-3xl text-center">Create NFT</h2>
                 <input
                   placeholder="Asset Name"
-                  className="mt-8 border rounded p-4"
+                  className="mt-8 border rounded p-4 focus:outline-none"
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                 />
                 <textarea
                   placeholder="Asset description"
-                  className="mt-2 border rounded p-4"
+                  className="mt-2 border rounded p-4 focus:outline-none"
                   onChange={(e) =>
                     setForm({ ...form, description: e.target.value })
                   }
                 />
                 <input
                   placeholder="Asset Price in Eth"
-                  className="mt-8 border rounded p-4"
+                  className="mt-8 border rounded p-4 focus:outline-none"
                   type="number"
                   onChange={(e) => setForm({ ...form, price: e.target.value })}
                 />
                 <input
                   type="file"
                   name="Asset"
-                  className="hidden"
+                  className="hidden focus:outline-none"
                   ref={fileInput}
                   onChange={onChange}
                 />
                 { (!imageUrl || uploading ) && (
                   <div className="my-4">
-                    <button className="p-2 bg-gradient-to-tr from-rose-400 to-rose-600 text-white rounded-md flex flex-row justify-between items-center" onClick={triggerOnChange}>
+                    <button className="prelative z-10 flex items-center gap-2 p-3 rounded-md text-white font-bold
+               bg-gradient-to-r from-red-400 via-yellow-400 to-purple-500
+               hover:scale-105 transition-transform duration-500 shadow-xl-2 bg-gradient-to-tr from-rose-400 to-rose-600 text-white rounded-md flex flex-row justify-between items-center" onClick={triggerOnChange}>
                       <UploadIcon className="fill-white w-5 h-5"/>
                       <span>Upload Image</span>
                     </button>
@@ -256,7 +258,9 @@ const Create = () => {
                 {!txWait ? (
                   <button
                     onClick={createItem}
-                    className="font-bold mt-4 bg-gradient-to-r from-[#1199fa] to-[#11d0fa]  rounded-md text-white  p-4 shadow-lg"
+                    className="relative z-10 w-full p-4 font-bold rounded-md text-white
+               bg-gradient-to-r from-blue-400 via-purple-500 to-pink-400
+               hover:scale-105 transition-transform duration-500 shadow-xl mt-6"
                   >
                     Create NFT
                   </button>
@@ -269,35 +273,52 @@ const Create = () => {
                 </h5>
               </div>
               {imageUrl ? (
-                <div className="w-[300px] h-[300px]">
-                  <Image
-                    src={`https://ipfs.io/ipfs/${imageUrl.slice(7)}`}
-                    unoptimized
-                    alt="Picture of the author"
-                    className="rounded mt-4"
-                    layout="responsive"
-                    width={300}
-                    height={300}
-                    placeholder={"blur"}
-                    blurDataURL={DATA_URL}
-                  />
-                </div>
-              ) : (
-                <div>
-                  <div className="flex items-center justify-center w-[300px] h-[300px] rounded-md border-2 border-blue-500">
-                    <h4 className="text-2xl">Not Image</h4>
-                  </div>
-                  {uploading && (
-                    <p className="py-3 text-center">Uploading...</p>
-                  )}
-                </div>
-              )}
+                              <div className="relative w-[300px] h-[300px] rounded-2xl overflow-hidden">
+                <div className="absolute inset-0 rounded-2xl blur-xl animate-rainbow pointer-events-none"></div>
+                <Image
+                  src={`https://ipfs.io/ipfs/${imageUrl.slice(7)}`}
+                  unoptimized
+                  alt="NFT Preview"
+                  className="rounded-2xl z-10"
+                  layout="responsive"
+                  width={300}
+                  height={300}
+                  placeholder={"blur"}
+                  blurDataURL={DATA_URL}
+                />
+              </div>
+            ) : (
+              <div className="relative w-[300px] h-[300px] rounded-md border-2 border-blue-500 flex items-center justify-center overflow-hidden">
+                <div className="absolute inset-0 blur-xl animate-rainbow"></div>
+                <h4 className="text-2xl z-10 text-white">No Image</h4>
+                {uploading && <p className="py-3 text-center z-10">Uploading...</p>}
+              </div>
+            )}
             </div>
           </div>
         </div>
       ) : (
         <WalletConnect />
       )}
+      <style jsx>{`
+      @keyframes rainbow {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      .animate-rainbow {
+        background: linear-gradient(270deg, #ff0000, #ff9900, #ffff00, #00ff00, #00ffff, #0000ff, #9900ff);
+        background-size: 1400% 1400%;
+        animation: rainbow 6s ease infinite;
+      }
+
+      .text-gradient {
+        background: linear-gradient(90deg, #ff0000, #ff9900, #ffff00, #00ff00, #00ffff, #0000ff, #9900ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    `}</style>
     </div>
   );
 };

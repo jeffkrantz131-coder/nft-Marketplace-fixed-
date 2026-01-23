@@ -118,7 +118,7 @@ const NFTDetails:NextPage = () => {
          <h2 className="bold text-blue-600 text-4xl text-center mb-6">{nft.name}</h2>
           <div className="grid grid-cols-[1fr_350px] gap-[20px] justify-center items-stretch">
             {/* Auction Input */}
-            <div className="flex flex-col gap-4 w-2/3 h-full justify-between">
+            <div className="flex flex-col gap-4 w-2/3 h-full justify-center">
                 <div>
                     <label className="font-bold text-pink-600">Starting Price (ETH)</label>
                   <input

@@ -9,8 +9,8 @@ const styles = {
 export const HeroTitle = () => {
   return (
       <h1 className={styles.container}>
-        <span  className={styles.title}>Top Sellers</span>
-        <span  className={styles.subTitle}>Of Our NFT Marketplace</span>
+        <span  className={styles.title}>Welcome</span>
+        <span  className={styles.subTitle}>To Our NFT Marketplace</span>
       </h1>
   )
 }
