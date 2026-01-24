@@ -154,7 +154,7 @@ const Dashboard:NextPage = () => {
 
       <div className='relative w-[75%] mx-auto p-8 
                         bg-gradient backdrop-blur-2xl 
-                        border border-none rounded-3xl shadow-[0_0_100px_rgba(0,255,255,0.15)] mt-3'>
+                        border border-none rounded-3xl shadow-[0_0_200px_rgba(0,255,255,0.15)] mt-3'>
       { isLoading ? <Loader className='w-[200px] h-[200px]' size={300} />  : <NFTS NFTs={currentNFTItems}  isLoading={isLoading}/>  }
       </div>
       </div>

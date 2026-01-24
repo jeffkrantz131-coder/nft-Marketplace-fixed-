@@ -181,16 +181,13 @@ contract NFTMarket is ReentrancyGuard {
         // 4️⃣ Item must be sold before reselling
         require(item.sold == true, "Item is already listed");
 
-        
         item.sold = false;
         item.price = newPrice;
         item.seller = payable(msg.sender);
         item.owner = payable(address(0));
         item.createAt = block.timestamp;
-
         
         s_itemsSold.decrement();
-
         
         IERC721(nftContract).transferFrom(
             msg.sender,

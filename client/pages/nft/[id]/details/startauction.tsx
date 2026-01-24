@@ -166,7 +166,26 @@ const NFTDetails:NextPage = () => {
                     onChange={(e) => setAuctionDuration(e.target.value)}
                     />
                 </div>
-                
+                {/* Tailwind + global CSS classes */}
+    <style global jsx>{`
+      @keyframes rainbowBorder {
+        0% { border: 4px solid red; }
+        16% { border: 4px solid orange; }
+        32% { border: 4px solid yellow; }
+        48% { border: 4px solid green; }
+        64% { border: 4px solid blue; }
+        80% { border: 4px solid indigo; }
+        100% { border: 4px solid violet; }
+      }
+      .animate-rainbow-border {
+        animation: rainbowBorder 4s linear infinite;
+      }
+      .text-gradient {
+        background: linear-gradient(90deg, #ff0000, #ff9900, #ffff00, #00ff00, #00ffff, #0000ff, #9900ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    `}</style>
 
                 <button
                     className="bg-gradient-to-r from-[#1199fa] to-[#11d0fa] rounded-3xl p-2 w-full text-black font-bold hover:opacity-90 mt-[110px]"

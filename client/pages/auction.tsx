@@ -205,7 +205,7 @@ const AuctionsPage: NextPage = () => {
             return (
               <div key={a.itemId} className="relative w-[250px] rounded-3xl overflow-hidden cursor-pointer
                   bg-gray-100/30 backdrop-blur-md border border-gray-300
-                  shadow-xl hover:shadow-[0_0_60px_rgba(255,0,255,0.6)]
+                  shadow-xl hover:shadow-[0_0_200px_rgba(255,0,255,0.6)]
                   transition-all duration-500 hover:-translate-y-2">
                 <div className="absolute inset-0 rounded-3xl blur-xl pointer-events-none rainbow-gradient"></div>
                   {/* Image */}

@@ -8,9 +8,9 @@ import imageFour from '../../assets/carousel-4.jpeg'
 import imageFive from '../../assets/carousel-5.jpeg'
 
 const styles = {
-  container: 'relative w-[100%] mb-[100px]',
+  container: 'relative w-[100%] mb-[80px]',
   gradient: 'w-[75%] my-0 mx-auto h-[55vh] bg-gradient-crousel',
-  imageContainer: 'box-border block overflow-hidden w-[75%] h-[initial] bg-none opacity-1 p-0 my-0 mx-auto absolute top-0 left-0 bottom-0 right-0 rounded-[20px]',
+  imageContainer: 'box-border block overflow-hidden w-[75%] bg-none opacity-1 p-0 my-0 mx-auto absolute top-0 left-0 bottom-0 right-0 rounded-[20px]',
 }
 
 export const Carousel:NextPage = () => {
@@ -28,7 +28,7 @@ export const Carousel:NextPage = () => {
       <div className={styles.gradient}></div>
       <div className={styles.imageContainer}>
       <div className='slider'></div>
-        <Image src={images[currentImage]}  layout="fill" objectFit="none" alt="image" className='fadeout' />
+        <Image src={images[currentImage]}  layout="fill" objectFit="cover" alt="image" className='fadeout' />
       </div>
     </div>
 

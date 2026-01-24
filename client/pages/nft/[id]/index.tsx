@@ -83,49 +83,49 @@ const NFTItem: NextPage = () => {
   };
 
   const resellNft = async () => {
-  if (!signer) {
-    toast.info("Connect your wallet first!");
-    return;
-  }
-  if (!resellPrice || parseFloat(resellPrice) <= 0) {
-    toast.info("Enter a valid price");
-    return;
-  }
-  if (!marketContract || !nftContract || !nft) return;
+    if (!signer) {
+      toast.info("Connect your wallet first!");
+      return;
+    }
+    if (!resellPrice || parseFloat(resellPrice) <= 0) {
+      toast.info("Enter a valid price");
+      return;
+    }
+    if (!marketContract || !nftContract || !nft) return;
 
-  const priceInWei = ethers.utils.parseUnits(resellPrice, "ether");
-  const toastTx = toast.loading("Listing NFT...", { position: "bottom-right" });
-  
-  try {
-    const tx = await marketContract.resellMarketItem(
-      nftContract.address,
-      nft.itemId, // use your MarketItem ID, not tokenId
-      priceInWei,
-      { value: await marketContract.getListingFee() }
-    );
-    await tx.wait();
+    const priceInWei = ethers.utils.parseUnits(resellPrice, "ether");
+    const toastTx = toast.loading("Listing NFT...", { position: "bottom-right" });
+    
+    try {
+      const tx = await marketContract.resellMarketItem(
+        nftContract.address,
+        nft.itemId, // use your MarketItem ID, not tokenId
+        priceInWei,
+        { value: await marketContract.getListingFee() }
+      );
+      await tx.wait();
 
-    toast.update(toastTx, {
-      render: "NFT Listed for Resale!",
-      type: "success",
-      isLoading: false,
-      autoClose: 3000,
-      position: "bottom-right",
-    });
+      toast.update(toastTx, {
+        render: "NFT Listed for Resale!",
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+        position: "bottom-right",
+      });
 
-    resetNFTtems(); // refresh dashboard/market
-    router.push("/dashboard");
-  } catch (err) {
-    console.error("Resell error:", err);
-    toast.update(toastTx, {
-      render: "Resell failed",
-      type: "error",
-      isLoading: false,
-      autoClose: 3000,
-      position: "bottom-right",
-    });
-  }
-};
+      resetNFTtems(); // refresh dashboard/market
+      router.push("/dashboard");
+    } catch (err) {
+      console.error("Resell error:", err);
+      toast.update(toastTx, {
+        render: "Resell failed",
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+        position: "bottom-right",
+      });
+    }
+  };
 
 return (
     <div className="bg-gradient text-white p-5">
@@ -141,7 +141,7 @@ return (
           
         <div className="relative w-[60%] mx-auto p-8 
                         bg-gradient backdrop-blur-2xl 
-                        border border-none rounded-3xl shadow-[0_0_100px_rgba(0,255,255,0.15)] mt-[50px]">
+                        border border-none rounded-3xl shadow-[0_0_200px_rgba(0,255,255,0.15)] mt-[50px]">
           
           <h1 className="text-center text-6xl font-black mb-8 
                    text-blue-400 drop-shadow-[0_0_20px_cyan]">
@@ -230,14 +230,9 @@ return (
       </div>
     ) : <TransactionProgress />)
   }
-          </div>
-
-          {/* NFT Image with animated rainbow neon border */}
-          
-
-</div>
-
-          </div>
+        </div>         
+      </div>
+    </div>
 
           {/* Fullscreen Image */}
           {fullImage && (

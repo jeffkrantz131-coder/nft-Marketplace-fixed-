@@ -222,7 +222,7 @@ const Create = () => {
         <div className="mx-auto my-6 flex justify-center items-center mt-20">
           <div className="relative w-[60%] mx-auto p-8 
                   bg-gradient backdrop-blur-2xl 
-                  border border-none rounded-3xl shadow-[0_0_100px_rgba(0,255,255,0.15)]">
+                  border border-none rounded-3xl shadow-[0_0_200px_rgba(0,255,255,0.15)]">
 
     {/* 1️⃣ Title Top-Center */}
     <h5 className="text-1xl font-black mb-8 
@@ -266,10 +266,10 @@ const Create = () => {
           className="p-4 rounded-md text-black w-full bg-white/10 text-white placeholder-white/70 
              border border-white/20 focus:bg-white/20 mt-2"
         >
-          <option value="Art">Art</option>
-          <option value="Game">Game</option>
-          <option value="Music">Music</option>
-          <option value="Sports">Sports</option>
+          <option className="bg-[#0f1c39] text-white" value="Art">Art</option>
+          <option className="bg-[#0f1c39] text-white" value="Game">Game</option>
+          <option className="bg-[#0f1c39] text-white" value="Music">Music</option>
+          <option className="bg-[#0f1c39] text-white" value="Sports">Sports</option>
         </select>
 
         {!txWait ? (

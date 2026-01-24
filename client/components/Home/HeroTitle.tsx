@@ -10,9 +10,9 @@ export const HeroTitle = () => {
   return (
       <h1 className={styles.container}>
         <span  className='text-center text-6xl font-black mb-6 
-                        text-blue-400 drop-shadow-[0_0_20px_cyan]'>Welcome</span>
-        <span  className='text-center text-3xl font-black mb-6 
-                        text-blue-400 drop-shadow-[0_0_20px_cyan]'>To Our NFT Marketplace</span>
+                        text-blue-400 drop-shadow-[0_0_20px_cyan] mt-10'>Welcome!</span>
+        {/* <span  className='text-center text-3xl font-black mb-6 
+                        text-blue-400 drop-shadow-[0_0_20px_cyan]'>To Our NFT Marketplace</span> */}
       </h1>
   )
 }

@@ -80,7 +80,7 @@ export const TopCollectibles = () => {
         <Loader className='relative w-[150px] h-[150px] bg-gradient my-0 mx-auto' size={150} /> ) : (
           <div className="relative w-[75%] mx-auto p-8 
                         bg-gradient backdrop-blur-2xl 
-                        border border-none rounded-3xl shadow-[0_0_100px_rgba(0,255,255,0.15)]">
+                        border border-none rounded-3xl shadow-[0_0_100px_rgba(0,255,255,0.15)] mb-[70px]">
 
           <h2 className='text-center text-6xl font-black mb-6 
                         text-blue-400 drop-shadow-[0_0_20px_cyan]'>Top Collectibles</h2>
