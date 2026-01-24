@@ -1,96 +1,10 @@
-// import { useContext, useEffect, useState } from "react";
-// import { MarketContext } from "../context/marketContext";
-// import { NFTCard } from "../components/collections/NFTCard";
-// import { ethers } from "ethers";
-
-// interface IAuctionItem {
-//   itemId: string;
-//   auctionId: string;
-//   image: string;
-//   name: string;
-//   creator: string;
-//   price: string; // current highest bid or start price
-//   endTime: number;
-// }
-
-// const AuctionPage = () => {
-//   const { marketContract, nftContract, web3Provider } = useContext(MarketContext);
-//   const [auctions, setAuctions] = useState<IAuctionItem[]>([]);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     if (!marketContract || !nftContract) return;
-
-//     const fetchAuctions = async () => {
-//       try {
-//         setLoading(true);
-
-//         // 👇 Replace this with your contract function that returns auctions
-//         const allAuctions = await marketContract.getAllAuctions();
-
-//         const activeAuctions = allAuctions.filter((a: any) => a.active);
-
-//         const items = await Promise.all(
-//           activeAuctions.map(async (auction: any) => {
-//             const tokenUri: string = await nftContract.tokenURI(auction.tokenId);
-//             const ipfsUri = tokenUri.replace("ipfs://", "https://ipfs.io/ipfs/");
-//             const metadata = await fetch(ipfsUri).then((res) => res.json());
-
-//             return {
-//               itemId: auction.tokenId.toString(),
-//               auctionId: auction.itemId.toString(),
-//               image: metadata.image.replace("ipfs://", "https://ipfs.io/ipfs/"),
-//               name: metadata.name,
-//               creator: auction.creator,
-//               price: ethers.utils.formatEther(
-//                 auction.highestBid.gt(0) ? auction.highestBid : auction.startPrice
-//               ),
-//               endTime: Number(auction.endTime),
-//             };
-//           })
-//         );
-
-//         setAuctions(items);
-//         setLoading(false);
-//       } catch (err) {
-//         console.error("Failed to fetch auctions:", err);
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchAuctions();
-//   }, [marketContract, nftContract]);
-
-//   return (
-//     <div className="bg-gradient text-white py-5">
-//       <h1 className="text-4xl text-center font-bold text-blue-600 mb-8">
-//         Active Auctions
-//       </h1>
-
-//       {loading ? (
-//         <p className="text-center text-xl">Loading auctions...</p>
-//       ) : auctions.length === 0 ? (
-//         <p className="text-center text-xl">No active auctions</p>
-//       ) : (
-//         <div className="flex flex-wrap gap-8 justify-center">
-//           {auctions.map((auction) => (
-//             <NFTCard key={auction.itemId} {...auction} />
-//           ))}
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default AuctionPage;
-
 import { ethers } from "ethers";
 import { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Loader } from "../components/common";
-import { getMarketContract, getNFTContract, generateItem } from "../context";
+import { getMarketContract, getNFTContract } from "../context";
 import { DATA_URL, shortenAddress } from "../utils";
 import { loadNFTMetadata } from "../utils/loadNFTMetadata";
 
@@ -108,6 +22,7 @@ interface AuctionItem {
   claimed: boolean;
   image?: string;
   name?: string;
+  description?: string;
 }
 
 const AuctionsPage: NextPage = () => {
@@ -137,12 +52,10 @@ const AuctionsPage: NextPage = () => {
 
       const parsed: AuctionItem[] = await Promise.all(
         allAuctions.map(async (a: any) => {
-          const meta = await loadNFTMetadata(
-            a.tokenId.toString(), nftContract
-          );
+          const meta = await loadNFTMetadata(a.tokenId.toString(), nftContract);
 
           return {
-            itemId: a.itemId.toString(),
+            itemId: a.itemId.toNumber(),
             tokenId: a.tokenId.toString(),
             nftContract: a.nftContract,
             creator: a.creator,
@@ -209,29 +122,49 @@ const AuctionsPage: NextPage = () => {
     }
   };
 
+  //  CANCEL AUCTION FUNCTION
+  const cancelAuction = async (auctionId: number) => {
+    try {
+      const provider = new ethers.providers.Web3Provider((window as any).ethereum);
+      const signer = provider.getSigner();
+      const market = await getMarketContract(provider, signer);
+
+      const tx = await market.cancelAuction(auctionId);
+      await tx.wait();
+
+      alert("Auction cancelled!");
+      loadAuctions();
+    } catch (err: any) {
+      console.error("Cancel failed:", err);
+      alert(err?.reason || err?.message || "Cancel failed");
+    }
+  };
+
+  // Countdown formatter
   const formatTime = (seconds: number) => {
-  const h = Math.floor(seconds / 3600);
-  const m = Math.floor((seconds % 3600) / 60);
-  const s = seconds % 60;
-  return `${h.toString().padStart(2,"0")}:${m.toString().padStart(2,"0")}:${s.toString().padStart(2,"0")}`;
-};
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return `${h.toString().padStart(2,"0")}:${m.toString().padStart(2,"0")}:${s.toString().padStart(2,"0")}`;
+  };
 
+  // Countdown timer
   useEffect(() => {
-  const interval = setInterval(() => {
-    setTimeLeft(prev => {
-      const updated: { [key: number]: number } = {};
-      auctions.forEach(a => {
-        const remaining = Math.max(0, Math.floor(a.endTime - Date.now() / 1000));
-        updated[a.itemId] = remaining;
+    const interval = setInterval(() => {
+      setTimeLeft(prev => {
+        const updated: { [key: number]: number } = {};
+        auctions.forEach(a => {
+          const remaining = Math.max(0, Math.floor(a.endTime - Date.now() / 1000));
+          updated[a.itemId] = remaining;
+        });
+        return updated;
       });
-      return updated;
-    });
-  }, 1000);
+    }, 1000);
 
-  return () => clearInterval(interval);
-}, [auctions]);
+    return () => clearInterval(interval);
+  }, [auctions]);
 
-const activeAuctions = auctions.filter(a => a.active && !a.claimed);
+  const activeAuctions = auctions.filter(a => a.active && !a.claimed);
 
   return (
     <div className="bg-gradient text-white p-5">
@@ -239,14 +172,16 @@ const activeAuctions = auctions.filter(a => a.active && !a.claimed);
         <title>Active Auctions</title>
       </Head>
 
-      <h1 className="text-4xl font-bold text-center text-blue-500 mb-6">
-        Active Auctions
-      </h1>
-
       {loading ? (
         <Loader className="w-[400px] h-[400px] mx-auto" size={400} />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 w-full px-5 mx-auto">
+        <div className="relative w-[75%] mx-auto p-8 
+                        bg-gradient backdrop-blur-2xl 
+                        border border-none rounded-3xl shadow-[0_0_100px_rgba(0,255,255,0.15)]">
+          <h1 className="text-center text-6xl font-black mb-8 
+                   text-blue-400 drop-shadow-[0_0_20px_cyan]">
+            Active Auctions
+          </h1>
           {activeAuctions.length === 0 && (
             <p className="text-center text-gray-400 col-span-full">
               No active auctions right now.
@@ -255,62 +190,108 @@ const activeAuctions = auctions.filter(a => a.active && !a.claimed);
 
           {activeAuctions.map(a => {
             const ended = Date.now() / 1000 > a.endTime;
+            const isCreator = a.creator.toLowerCase() === signerAddress.toLowerCase();
+            const hasBid = Number(a.highestBid) > 0;
+
+            // OpenSea cancel rule
+            const canCancel =
+              isCreator &&
+              a.active &&
+              !a.claimed &&
+              !ended &&
+              !hasBid;
 
             return (
-              <div key={a.itemId} className="bg-gradient-to-b rounded-3xl shadow-xl border border-[#333] p-6 hover:scale-105 transition-transform duration-300 flex flex-col">
-                <div className="w-full max-w-[500px] mb-4">
-                <Image
-                  unoptimized
-                  src={a.image || ""}
-                  alt={a.name || ""}
-                  width={300}
-                  height={300}
-                  layout="responsive"
-                  className="rounded-xl"
-                  blurDataURL={DATA_URL}
-                  placeholder="blur"
-                />
-                </div>
+              <div key={a.itemId} className="relative w-[250px] rounded-3xl overflow-hidden cursor-pointer
+                  bg-gray-100/30 backdrop-blur-md border border-gray-300
+                  shadow-xl hover:shadow-[0_0_60px_rgba(255,0,255,0.6)]
+                  transition-all duration-500 hover:-translate-y-2">
+                <div className="absolute inset-0 rounded-3xl blur-xl pointer-events-none rainbow-gradient"></div>
+                  {/* Image */}
+                  <div className="w-full max-w-[500px] overflow-hidden">
+                    <Image
+                      unoptimized
+                      src={a.image || ""}
+                      alt={a.name || ""}
+                      width={250}
+                      height={250}
+                      className="rounded-xl"
+                      blurDataURL={DATA_URL}
+                      placeholder="blur"
+                    />
+                  </div>
+                  <div className="p-4 space-y-3 bg-gray-100/30 backdrop-blur-md rounded-3xl">
+                    <h2 className="text-xl font-bold mt-0">{a.name}</h2>
 
-                <h2 className="text-xl font-bold mt-2">{a.name}</h2>
-                <p>Token ID: {a.tokenId}</p>
+                    <div className="flex flex-col w-full mb-4">
+                      <div className="flex justify-between">
+                        <span>Seller:</span>
+                        <span>{shortenAddress(a.creator)} ETH</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Start Price:</span>
+                        <span>{a.startPrice} ETH</span>
+                      </div>
 
-                <div className="flex flex-col w-full mb-4">
-                  <div className="flex justify-between text-white mb-1">
-                    <span>Start Price:</span>
-                    <span>{a.startPrice} ETH</span>
-                  </div>
-                  <div className="flex justify-between text-white mb-1">
-                    <span>Highest Bid:</span>
-                    <span>{a.highestBid} ETH</span>
-                  </div>
-                  <div className="flex justify-between text-white mb-1">
-                    <span>Highest Bidder:</span>
-                    <span>{shortenAddress(a.highestBidder)}</span>
-                  </div>
-                  <div className="flex justify-between text-gray-400 text-sm mb-1">
-                    <span>Ends in:</span>
-                    <span>{formatTime(timeLeft[a.itemId])}</span>
-                  </div>
-                </div>
+                      <div className="flex justify-between">
+                        <span>Highest Bid:</span>
+                        <span>{a.highestBid} ETH</span>
+                      </div>
 
+                      <div className="flex justify-between">
+                        <span>Highest Bidder:</span>
+                        <span>{shortenAddress(a.highestBidder)}</span>
+                      </div>
+
+                      <div className="flex justify-between text-gray-400 text-sm">
+                        <span>Ends in:</span>
+                        <span>{formatTime(timeLeft[a.itemId] || 0)}</span>
+                      </div>
+                    </div>
+              </div>
+              {/* Custom rainbow animation */}
+              <style jsx>{`
+                .rainbow-gradient {
+                  background: linear-gradient(270deg, #ff0000, #ff9900, #ffff00, #00ff00, #00ffff, #0000ff, #9900ff);
+                  background-size: 1400% 1400%;
+                  animation: rainbowMove 12s ease infinite;
+                }
+
+                @keyframes rainbowMove {
+                  0% { background-position: 0% 50%; }
+                  50% { background-position: 100% 50%; }
+                  100% { background-position: 0% 50%; }
+                }
+              `}</style>
                 {/* Bid Section */}
                 {a.active && !ended && (
-                  <div className="mt-3">
-                    <input
-                      type="number"
-                      placeholder="Your bid (ETH)"
-                      className="p-2 text-black w-full rounded-md focus:outline-none"
-                      onChange={(e) =>
+                  <div className="mt-1 flex flex-col gap-2">
+                    <div className="flex gap-2 w-full">
+                      <button
+                      onClick={() => placeBid(a.itemId)}
+                      className="bg-green-500 p-2 rounded-3xl w-full font-bold z-10"
+                      >
+                        Place Bid
+                      </button>
+                      <input
+                        type="number"
+                        placeholder="ETH"
+                        className="p-2 text-black w-full rounded-3xl focus:outline-none z-10"
+                        onChange={(e) =>
                         setBidAmounts({ ...bidAmounts, [a.itemId]: e.target.value })
                       }
-                    />
+                      />
+                    </div>
+                    {/* Cancel Auction Button */}
+                    {canCancel && (
                     <button
-                      onClick={() => placeBid(a.itemId)}
-                      className="bg-green-500 p-2 rounded-md w-full mt-2 font-bold"
+                      onClick={() => cancelAuction(a.itemId)}
+                      className="bg-red-600 hover:bg-red-700 p-2 rounded-md w-full mt-1 font-bold z-10"
                     >
-                      Place Bid
+                      Cancel
                     </button>
+                    )}
+                    
                   </div>
                 )}
 
@@ -318,19 +299,28 @@ const activeAuctions = auctions.filter(a => a.active && !a.claimed);
                 {ended && !a.claimed && (
                   <button
                     onClick={() => claimAuction(a.itemId)}
-                    className="bg-yellow-500 p-2 rounded-md w-full mt-3 font-bold"
+                    className="bg-yellow-500 p-2 rounded-3xl w-full mt-1 font-bold z-10"
                   >
                     Claim Auction
                   </button>
                 )}
 
+                {/* Cancel Disabled Info */}
+                {isCreator && hasBid && a.active && !ended && (
+                  <p className="text-red-400 text-sm mt-1">
+                     Cannot cancel after bid
+                  </p>
+                )}
+
+                {/* Claimed Status */}
                 {a.claimed && (
-                  <p className="text-green-400 mt-2 font-bold">✔ Claimed</p>
+                  <p className="text-green-400 mt-1 font-bold z-10">✔ Claimed</p>
                 )}
               </div>
             );
           })}
         </div>
+        
       )}
     </div>
   );

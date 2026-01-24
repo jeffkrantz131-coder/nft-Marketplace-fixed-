@@ -21,8 +21,11 @@ const Marketplace:NextPage = () => {
 
   return (
     <section className="bg-gradient text-white py-5">
-      <div className="w-[80%] mx-auto my-0">
-         <h2 className="text-center text-4xl text-blue-500 font-bold">Marketplace</h2>
+      <div className="relative w-[75%] mx-auto p-8 
+                        bg-gradient backdrop-blur-2xl 
+                        border border-none rounded-3xl shadow-[0_0_100px_rgba(0,255,255,0.15)]">
+         <h2 className="text-center text-6xl font-black mb-8 
+                   text-blue-400 drop-shadow-[0_0_20px_cyan]">Marketplace</h2>
          <NFTCardItems items={NFTFilterItems} isLoading={isLoading}/>
       </div>
       <div className="flex justify-center items-center">

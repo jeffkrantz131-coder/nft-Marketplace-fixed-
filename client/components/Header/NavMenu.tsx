@@ -6,7 +6,7 @@ import { MarketContext } from "../../context";
 const styles = {
   menu: "col-[4] flex items-center justify-around",
   menuItemButton:
-    "bg-gradient-to-r from-[#1199fa] to-[#11d0fa] p-2 rounded-md cursor-pointer font-bold",
+    "cursor-pointer hover:text-pink-600 font-bold",
   menuItemLink: "cursor-pointer hover:text-pink-600 font-bold",
 };
 

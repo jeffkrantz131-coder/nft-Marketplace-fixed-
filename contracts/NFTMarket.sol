@@ -47,7 +47,7 @@ contract NFTMarket is ReentrancyGuard {
         uint256 amount
     );
 
-
+    event AuctionCancelled(uint256 auctionId);
     using Counters for Counters.Counter;
     Counters.Counter private s_itemIds;
     Counters.Counter private s_itemsSold;
@@ -347,22 +347,41 @@ contract NFTMarket is ReentrancyGuard {
         return s_Auctions[auctionId];
     }
 
-    // function getMarketItems() public view returns (MarketItem[] memory) {
-    //     uint256 itemsCount = s_itemIds.current();
-    //     uint256 unsoldItemsCount = itemsCount - s_itemsSold.current();
-    //     MarketItem[] memory items = new MarketItem[](unsoldItemsCount);
-    //     uint256 currentIndex = 0;
-    //     for (uint256 i = 0; i < itemsCount; i++) {
-    //         if (!s_MarketItems[i + 1].sold) {
-    //             uint256 currentItemId = s_MarketItems[i + 1].itemId;
-    //             MarketItem storage marketItem = s_MarketItems[currentItemId];
-    //             items[currentIndex] = marketItem;
-    //             currentIndex++;
-    //         }
-    //     }
+    // event AuctionCancelled(uint256 auctionId);
 
-    //     return items;
-    // }
+    function cancelAuction(uint256 auctionId) public nonReentrant {
+        AuctionItem storage auction = s_Auctions[auctionId];
+
+        // Auction must be active
+        require(auction.active, "Auction not active");
+
+        // Cannot cancel after claimed
+        require(!auction.claimed, "Auction already claimed");
+
+        // Only creator can cancel
+        require(msg.sender == auction.creator, "Only creator can cancel");
+
+        // Cannot cancel after auction ended
+        require(block.timestamp < auction.endTime, "Auction already ended");
+
+        // OpenSea rule: cannot cancel if there is a bid
+        require(auction.highestBidder == address(0), "Cannot cancel after bid");
+
+        // Mark auction inactive
+        auction.active = false;
+        auction.claimed = true;
+
+        // Return NFT to creator
+        IERC721(auction.nftContract).transferFrom(
+            address(this),
+            auction.creator,
+            auction.tokenId
+        );
+
+        emit AuctionCancelled(auctionId);
+    }
+
+
 
     function getMarketItems() public view returns (MarketItem[] memory) {
         uint256 itemsCount = s_itemIds.current();

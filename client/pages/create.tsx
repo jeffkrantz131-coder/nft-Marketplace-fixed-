@@ -210,93 +210,121 @@ const Create = () => {
   return (
     <div className="bg-gradient text-white">
       <Head>
-        <title>Create NFt</title>
+        <title >Create NFt</title>
         <meta name="description" content="NFT Create" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {isConnected ? (
-        <div className="mx-auto my-6 flex justify-center items-center">
-          <div className="w-[70%]">
-            <div className="grid grid-cols-[1fr_300px] gap-24 items-center justify-center">
-              <div className="flex flex-col pb-12 text-black">
-                <h2 className="text-white text-3xl text-center">Create NFT</h2>
-                <input
-                  placeholder="Asset Name"
-                  className="mt-8 border rounded p-4 focus:outline-none"
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                />
-                <textarea
-                  placeholder="Asset description"
-                  className="mt-2 border rounded p-4 focus:outline-none"
-                  onChange={(e) =>
-                    setForm({ ...form, description: e.target.value })
-                  }
-                />
-                <input
-                  placeholder="Asset Price in Eth"
-                  className="mt-8 border rounded p-4 focus:outline-none"
-                  type="number"
-                  onChange={(e) => setForm({ ...form, price: e.target.value })}
-                />
-                <input
-                  type="file"
-                  name="Asset"
-                  className="hidden focus:outline-none"
-                  ref={fileInput}
-                  onChange={onChange}
-                />
-                { (!imageUrl || uploading ) && (
-                  <div className="my-4">
-                    <button className="prelative z-10 flex items-center gap-2 p-3 rounded-md text-white font-bold
-               bg-gradient-to-r from-red-400 via-yellow-400 to-purple-500
-               hover:scale-105 transition-transform duration-500 shadow-xl-2 bg-gradient-to-tr from-rose-400 to-rose-600 text-white rounded-md flex flex-row justify-between items-center" onClick={triggerOnChange}>
-                      <UploadIcon className="fill-white w-5 h-5"/>
-                      <span>Upload Image</span>
-                    </button>
-                  </div>
-                )}
-                {!txWait ? (
-                  <button
-                    onClick={createItem}
-                    className="relative z-10 w-full p-4 font-bold rounded-md text-white
-               bg-gradient-to-r from-blue-400 via-purple-500 to-pink-400
-               hover:scale-105 transition-transform duration-500 shadow-xl mt-6"
-                  >
-                    Create NFT
-                  </button>
-                ) : (
-                  <TransactionProgress />
-                )}
+        <div className="mx-auto my-6 flex justify-center items-center mt-20">
+          <div className="relative w-[60%] mx-auto p-8 
+                  bg-gradient backdrop-blur-2xl 
+                  border border-none rounded-3xl shadow-[0_0_100px_rgba(0,255,255,0.15)]">
 
-                <h5 className="text-white mt-4">
-                  * Listing Price: {ethers.utils.formatEther(listingFee)} eth
-                </h5>
-              </div>
-              {imageUrl ? (
-                              <div className="relative w-[300px] h-[300px] rounded-2xl overflow-hidden">
-                <div className="absolute inset-0 rounded-2xl blur-xl animate-rainbow pointer-events-none"></div>
-                <Image
-                  src={`https://ipfs.io/ipfs/${imageUrl.slice(7)}`}
-                  unoptimized
-                  alt="NFT Preview"
-                  className="rounded-2xl z-10"
-                  layout="responsive"
-                  width={300}
-                  height={300}
-                  placeholder={"blur"}
-                  blurDataURL={DATA_URL}
-                />
-              </div>
-            ) : (
-              <div className="relative w-[300px] h-[300px] rounded-md border-2 border-blue-500 flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 blur-xl animate-rainbow"></div>
+    {/* 1️⃣ Title Top-Center */}
+    <h5 className="text-1xl font-black mb-8 
+                   text-blue-400 drop-shadow-[0_0_10px_cyan]">
+          Listing Price: {ethers.utils.formatEther(listingFee)} eth
+    </h5>
+    <h2 className="text-center text-6xl font-black mb-8 
+                   text-blue-400 drop-shadow-[0_0_20px_cyan]">
+      Create NFT
+    </h2>
+
+    {/* 3️⃣ Left + Right panels */}
+    <div className="grid grid-cols-[1fr_320px] gap-8 items-start justify-center">
+
+      {/* Left Input Panel */}
+      <div className="flex flex-col text-black h-full">
+        <input
+          placeholder="Asset Name"
+          className="mt-2 w-full p-4 rounded-xl bg-white/10 text-white placeholder-white/70 
+             border border-white/20 focus:bg-white/20 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
+        />
+        <textarea
+          placeholder="Asset description"
+          className="mt-2 w-full p-4 rounded-xl bg-white/10 text-white placeholder-white/70 
+             border border-white/20 focus:bg-white/20 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+          onChange={(e) => setForm({ ...form, description: e.target.value })}
+        />
+        <input
+          placeholder="Asset Price in Eth"
+          type="number"
+          className="mt-2 w-full p-4 rounded-xl bg-white/10 text-white placeholder-white/70 
+             border border-white/20 focus:bg-white/20 focus:outline-none focus:ring-2 focus:ring-cyan-400 appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+             [&::-moz-number-spin-button]:appearance-none"
+          onChange={(e) => setForm({ ...form, price: e.target.value })}
+        />
+
+        {!txWait ? (
+          <button
+            onClick={createItem}
+            className="relative z-10 w-full p-4 font-bold rounded-md text-white
+                       bg-gradient-to-r from-blue-400 via-purple-500 to-pink-400
+                       hover:scale-105 transition-transform duration-500 shadow-xl mt-6"
+          >
+            Create NFT
+          </button>
+        ) : (
+          <TransactionProgress />
+        )}
+
+        
+      </div>
+
+      {/* Right Image Panel */}
+      <div className="flex flex-col h-full items-center"> {/* same height as left */}
+        <div className="relative w-[300px] h-full rounded-2xl overflow-hidden flex flex-col">
+          {imageUrl ? (
+            <>
+              <div className="absolute inset-0 rounded-2xl blur-xl animate-rainbow pointer-events-none"></div>
+              <Image
+                src={`https://ipfs.io/ipfs/${imageUrl.slice(7)}`}
+                unoptimized
+                alt="NFT Preview"
+                className="rounded-2xl z-10"
+                layout="responsive"
+                width={300}
+                height={300}
+                placeholder={"blur"}
+                blurDataURL={DATA_URL}
+              />
+            </>
+          ) : (
+            <div className="relative w-full h-full rounded-md border-2 border-blue-500 flex items-center justify-center overflow-hidden">
+              <div className="absolute inset-0 blur-xl animate-rainbow flex items-center justify-center">
                 <h4 className="text-2xl z-10 text-white">No Image</h4>
-                {uploading && <p className="py-3 text-center z-10">Uploading...</p>}
               </div>
-            )}
+              {uploading && <p className="py-3 text-center z-10">Uploading...</p>}
             </div>
-          </div>
+          )}
+          <input
+            type="file"
+            name="Asset"
+            className="hidden"
+            ref={fileInput}
+            onChange={onChange}
+          />
+          {/* 2️⃣ Upload Button under the Image */}
+          {!imageUrl && (
+          <button
+            onClick={triggerOnChange}
+            className="mt-4 w-full p-3 rounded-md text-white font-bold
+                       bg-gradient-to-r from-red-400 via-yellow-400 to-purple-500
+                       hover:scale-105 transition-transform duration-500 shadow-xl flex justify-center items-center"
+          >
+            <UploadIcon className="fill-white w-5 h-5 mr-2"/>
+            Upload Image
+          </button>
+          )}
         </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
       ) : (
         <WalletConnect />
       )}

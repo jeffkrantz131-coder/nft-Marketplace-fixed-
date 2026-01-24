@@ -107,6 +107,7 @@ export declare namespace NFTMarket {
 export interface NFTMarketInterface extends utils.Interface {
   functions: {
     "buyNFT(address,uint256)": FunctionFragment;
+    "cancelAuction(uint256)": FunctionFragment;
     "claimAuction(uint256)": FunctionFragment;
     "createAuction(address,uint256,uint256,uint256)": FunctionFragment;
     "createMarketItem(address,uint256,uint256)": FunctionFragment;
@@ -129,6 +130,7 @@ export interface NFTMarketInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "buyNFT"
+      | "cancelAuction"
       | "claimAuction"
       | "createAuction"
       | "createMarketItem"
@@ -151,6 +153,10 @@ export interface NFTMarketInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "buyNFT",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "cancelAuction",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "claimAuction",
@@ -237,6 +243,10 @@ export interface NFTMarketInterface extends utils.Interface {
 
   decodeFunctionResult(functionFragment: "buyNFT", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "cancelAuction",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "claimAuction",
     data: BytesLike
   ): Result;
@@ -297,17 +307,30 @@ export interface NFTMarketInterface extends utils.Interface {
   ): Result;
 
   events: {
+    "AuctionCancelled(uint256)": EventFragment;
     "AuctionClaimed(uint256,address,uint256)": EventFragment;
     "AuctionCreated(uint256,address,uint256,address,uint256,uint256,uint256)": EventFragment;
     "NewBid(uint256,address,uint256)": EventFragment;
     "marketItemNFT(uint256,address,uint256,address,address,address,uint256,uint256,bool)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "AuctionCancelled"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "AuctionClaimed"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "AuctionCreated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "NewBid"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "marketItemNFT"): EventFragment;
 }
+
+export interface AuctionCancelledEventObject {
+  auctionId: BigNumber;
+}
+export type AuctionCancelledEvent = TypedEvent<
+  [BigNumber],
+  AuctionCancelledEventObject
+>;
+
+export type AuctionCancelledEventFilter =
+  TypedEventFilter<AuctionCancelledEvent>;
 
 export interface AuctionClaimedEventObject {
   auctionId: BigNumber;
@@ -410,6 +433,11 @@ export interface NFTMarket extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    cancelAuction(
+      auctionId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     claimAuction(
       auctionId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -506,6 +534,11 @@ export interface NFTMarket extends BaseContract {
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  cancelAuction(
+    auctionId: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   claimAuction(
     auctionId: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -600,6 +633,11 @@ export interface NFTMarket extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    cancelAuction(
+      auctionId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     claimAuction(
       auctionId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -689,6 +727,9 @@ export interface NFTMarket extends BaseContract {
   };
 
   filters: {
+    "AuctionCancelled(uint256)"(auctionId?: null): AuctionCancelledEventFilter;
+    AuctionCancelled(auctionId?: null): AuctionCancelledEventFilter;
+
     "AuctionClaimed(uint256,address,uint256)"(
       auctionId?: PromiseOrValue<BigNumberish> | null,
       winner?: PromiseOrValue<string> | null,
@@ -759,6 +800,11 @@ export interface NFTMarket extends BaseContract {
       nftContract: PromiseOrValue<string>,
       itemId: PromiseOrValue<BigNumberish>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    cancelAuction(
+      auctionId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     claimAuction(
@@ -841,6 +887,11 @@ export interface NFTMarket extends BaseContract {
       nftContract: PromiseOrValue<string>,
       itemId: PromiseOrValue<BigNumberish>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    cancelAuction(
+      auctionId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     claimAuction(

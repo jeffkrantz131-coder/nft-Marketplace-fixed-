@@ -114,28 +114,54 @@ const NFTDetails:NextPage = () => {
       </Head>
     {
       !nft ? (<Loader className='w-[500px] h-[500px] mx-auto my-0 py-5' size={500} />)  :
-      (<section className="w-[50%] mx-auto my-0">
-         <h2 className="bold text-blue-600 text-4xl text-center mb-6">{nft.name}</h2>
-          <div className="grid grid-cols-[1fr_350px] gap-[20px] justify-center items-stretch">
-            {/* Auction Input */}
-            <div className="flex flex-col gap-4 w-2/3 h-full justify-center">
+      (<div className="relative w-[60%] mx-auto p-8 
+                        bg-gradient backdrop-blur-2xl 
+                        border border-none rounded-3xl shadow-[0_0_100px_rgba(0,255,255,0.15)] mt-[50px]">
+          <h1 className="text-center text-6xl font-black mb-8 
+                   text-blue-400 drop-shadow-[0_0_20px_cyan]">
+            Auction
+          </h1>
+          
+            
+          <div className="flex flex-row h-full mx-auto">
+            {/* <div className="flex flex-col items-start h-full"> */}
+              <div className="relative w-[350px] h-[350px] rounded-2xl mx-auto items-start h-full">
+                <div className="absolute -inset-1 rounded-2xl z-0 animate-rainbow-border pointer-events-none"></div>
+                  <Image
+                    unoptimized
+                    src={nft!.image}
+                    alt={nft.name}
+                    className="relative z-10 rounded-2xl"
+                    width={350}
+                    height={350}
+                    placeholder="blur"
+                    blurDataURL={DATA_URL}
+                  />
+              </div>
+            {/* </div> */}
+
+            <div className="flex flex-col mx-auto">
                 <div>
                     <label className="font-bold text-pink-600">Starting Price (ETH)</label>
                   <input
                     type="number"
                     placeholder="Enter starting price"
-                    className="p-2 rounded-md text-black w-full focus:outline-none"
+                    className="mt-2 w-full p-4 rounded-xl bg-white/10 text-white placeholder-white/70 
+                              border border-white/20 focus:bg-white/20 focus:outline-none focus:ring-2 focus:ring-cyan-400 appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+                              [&::-moz-number-spin-button]:appearance-none"
                     value={startingPrice}
                     onChange={(e) => setStartingPrice(e.target.value)}
                   />
                 </div>
                 
-                <div>
+                <div className="mt-5">
                     <label className="font-bold text-pink-600">Auction Duration (Hours)</label>
                     <input
                     type="number"
                     placeholder="Enter duration"
-                    className="p-2 rounded-md text-black w-full focus:outline-none"
+                    className="mt-2 w-full p-4 rounded-xl bg-white/10 text-white placeholder-white/70 
+                              border border-white/20 focus:bg-white/20 focus:outline-none focus:ring-2 focus:ring-cyan-400 appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+                              [&::-moz-number-spin-button]:appearance-none"
                     value={auctionDuration}
                     onChange={(e) => setAuctionDuration(e.target.value)}
                     />
@@ -143,33 +169,16 @@ const NFTDetails:NextPage = () => {
                 
 
                 <button
-                    className="bg-gradient-to-r from-[#1199fa] to-[#11d0fa] rounded-3xl p-2 w-full text-black font-bold hover:opacity-90 mt-3"
+                    className="bg-gradient-to-r from-[#1199fa] to-[#11d0fa] rounded-3xl p-2 w-full text-black font-bold hover:opacity-90 mt-[110px]"
                     onClick={startAuction}
                     disabled={loading}
                 >
                     {loading ? "Starting Auction..." : "Start Auction"}
                 </button>
-                </div>
-            {/* NFT Image */}
-            <div className="flex flex-col items-center h-full">
-              <div
-                className="w-[350px] h-[350px] cursor-pointer hover:opacity-80"
-                onClick={() => setFullImage(true)}
-              >
-                <Image
-                  unoptimized
-                  src={nft!.image}
-                  alt={nft!.name}
-                  className="rounded-2xl mt-4"
-                  layout="responsive"
-                  width={350}
-                  height={350}
-                  blurDataURL={DATA_URL}
-                  placeholder="blur"
-                />
               </div>
             </div>
-          </div>
+            
+          
 
           {/* Fullscreen Image Overlay */}
           {fullImage && (
@@ -193,7 +202,7 @@ const NFTDetails:NextPage = () => {
               </div>
             </div>
           )}
-        </section>
+        </div>
       )}
     </div>
   );
