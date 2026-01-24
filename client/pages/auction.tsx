@@ -31,6 +31,7 @@ const AuctionsPage: NextPage = () => {
   const [bidAmounts, setBidAmounts] = useState<{ [key: number]: string }>({});
   const [signerAddress, setSignerAddress] = useState("");
   const [timeLeft, setTimeLeft] = useState<{ [key: number]: number }>({});
+   
 
   // Load auctions
   useEffect(() => {
@@ -190,7 +191,7 @@ const AuctionsPage: NextPage = () => {
 
           {activeAuctions.map(a => {
             const ended = Date.now() / 1000 > a.endTime;
-            const isCreator = a.creator.toLowerCase() === signerAddress.toLowerCase();
+            const isCreator:boolean = a.creator.toLowerCase() === signerAddress.toLowerCase();
             const hasBid = Number(a.highestBid) > 0;
 
             // OpenSea cancel rule
@@ -264,42 +265,40 @@ const AuctionsPage: NextPage = () => {
                 }
               `}</style>
                 {/* Bid Section */}
-                {a.active && !ended && (
+                {a.active && !ended && ! isCreator &&(
                   <div className="mt-1 flex flex-col gap-2">
-                    <div className="flex gap-2 w-full">
+                    <div className="flex  w-full">
                       <button
                       onClick={() => placeBid(a.itemId)}
-                      className="bg-green-500 p-2 rounded-3xl w-full font-bold z-10"
+                      className="bg-green-500 p-2 rounded-bl-3xl rounded-tr-none rounded-tl-none rounded-br-none w-full font-bold z-10"
                       >
                         Place Bid
                       </button>
                       <input
                         type="number"
                         placeholder="ETH"
-                        className="p-2 text-black w-full rounded-3xl focus:outline-none z-10"
+                        className="p-2 text-black w-full rounded-br-3xl rounded-tr-none rounded-tl-none rounded-bl-none focus:outline-none z-10"
                         onChange={(e) =>
                         setBidAmounts({ ...bidAmounts, [a.itemId]: e.target.value })
                       }
                       />
                     </div>
-                    {/* Cancel Auction Button */}
-                    {canCancel && (
-                    <button
-                      onClick={() => cancelAuction(a.itemId)}
-                      className="bg-red-600 hover:bg-red-700 p-2 rounded-md w-full mt-1 font-bold z-10"
-                    >
-                      Cancel
-                    </button>
-                    )}
-                    
                   </div>
                 )}
-
+                    {/* Cancel Auction Button */}
+                    {a.active && !ended && isCreator && canCancel && (
+                      <button
+                        onClick={() => cancelAuction(a.itemId)}
+                        className="bg-red-600  p-2 rounded-md w-full mt-1 font-bold relative z-40"
+                      >
+                        Cancel
+                      </button>
+                    )}                 
                 {/* Claim Section */}
                 {ended && !a.claimed && (
                   <button
                     onClick={() => claimAuction(a.itemId)}
-                    className="bg-yellow-500 p-2 rounded-3xl w-full mt-1 font-bold z-10"
+                    className="bg-yellow-600 p-2 rounded-3xl w-full mt-1 font-bold relative z-40"
                   >
                     Claim Auction
                   </button>
@@ -307,14 +306,14 @@ const AuctionsPage: NextPage = () => {
 
                 {/* Cancel Disabled Info */}
                 {isCreator && hasBid && a.active && !ended && (
-                  <p className="text-red-400 text-sm mt-1">
-                     Cannot cancel after bid
+                  <p className="text-white-600 text-center text-sm mt-1 h-[30px] relative z-40">
+                     Can not cancel after bid
                   </p>
                 )}
 
                 {/* Claimed Status */}
                 {a.claimed && (
-                  <p className="text-green-400 mt-1 font-bold z-10">✔ Claimed</p>
+                  <p className="text-green-600 mt-1 font-bold relative z-40">✔ Claimed</p>
                 )}
               </div>
             );

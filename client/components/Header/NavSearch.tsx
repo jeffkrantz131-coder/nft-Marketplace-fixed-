@@ -7,7 +7,7 @@ import { MarketContext } from '../../context';
 const styles = {
   searchContainer: 'self-center relative w-full rounded-2xl p-1 bg-white',
   icon: 'w-6 h-6 fill-blue-500 absolute top-1',
-  inputField: 'text-black ml-6 w-[90%] outline-none'
+  inputField: 'text-black ml-6 w-[90%] outline-none '
 }
 
 export const NavSearch = () => {

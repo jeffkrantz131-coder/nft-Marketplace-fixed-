@@ -18,6 +18,7 @@ interface NFTForm {
   price: string;
   name: string;
   description: string;
+  category: string;
 }
 
 const WalletConnect = () => {
@@ -36,6 +37,7 @@ const Create = () => {
     price: "",
     name: "",
     description: "",
+    category: "Art",
   });
   const [listingFee, setListingFee] = useState("0");
   const [uploading, setUploading] = useState(false);
@@ -100,7 +102,9 @@ const Create = () => {
       name,
       description,
       image: imageUrl,
+      category: form.category, // 🔹 add category
     };
+
 
     const metaRes = await axios.post(
       "https://api.pinata.cloud/pinning/pinJSONToIPFS",
@@ -255,6 +259,18 @@ const Create = () => {
              [&::-moz-number-spin-button]:appearance-none"
           onChange={(e) => setForm({ ...form, price: e.target.value })}
         />
+        {/* <label className="font-bold text-white">Category</label> */}
+        <select
+          value={form.category}
+          onChange={(e) => setForm({ ...form, category: e.target.value })}
+          className="p-4 rounded-md text-black w-full bg-white/10 text-white placeholder-white/70 
+             border border-white/20 focus:bg-white/20 mt-2"
+        >
+          <option value="Art">Art</option>
+          <option value="Game">Game</option>
+          <option value="Music">Music</option>
+          <option value="Sports">Sports</option>
+        </select>
 
         {!txWait ? (
           <button
