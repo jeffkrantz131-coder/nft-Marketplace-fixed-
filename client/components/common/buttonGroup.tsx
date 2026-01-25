@@ -11,11 +11,31 @@ export type ButtonGroupItemType = {
   active: boolean;
 }
 
+// const styles = {
+//   buttonGroup: 'flex items-center justify-center font-bold',
+//   buttonGroupItem : 'p-2 rounded-3xl cursor-pointer bg-[#0f1c39] w-[130px] mx-[10px] font-bold',
+//   buttonGroupActive: 'bg-gradient-to-r from-[#1199fa] to-[#11d0fa] font-bold',
+// }
+
 const styles = {
-  buttonGroup: 'flex items-center justify-center font-bold',
-  buttonGroupItem : 'p-2 rounded-3xl cursor-pointer bg-[#0f1c39] w-[130px] mx-[10px] font-bold',
-  buttonGroupActive: 'bg-gradient-to-r from-[#1199fa] to-[#11d0fa] font-bold',
-}
+  buttonGroup: 'flex flex-wrap items-center justify-center gap-4', // responsive gap
+  buttonGroupItem: `
+    relative px-5 py-2 rounded-full min-w-[120px] font-bold
+    bg-[#0f1c39] text-white
+    border border-cyan-400/30
+    backdrop-blur-xl
+    shadow-[0_0_15px_rgba(0,255,255,0.2)]
+    transition-all
+    hover:shadow-[0_0_25px_rgba(0,255,255,0.5)]
+    hover:text-cyan-300
+  `,
+  buttonGroupActive: `
+    bg-gradient-to-r from-[#1199fa] to-[#11d0fa]
+    text-white
+    shadow-[0_0_30px_rgba(17,208,250,0.5)]
+    hover:shadow-[0_0_35px_rgba(17,208,250,0.7)]
+  `,
+};
 
 export const ButtonGroup:FC<IButtonGroup> = ({ items, handleButtonGroup }) => {
   return (

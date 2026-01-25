@@ -227,10 +227,10 @@ const Create = () => {
     {/* 1️⃣ Title Top-Center */}
     <h5 className="text-1xl font-black mb-8 
                    text-blue-400 drop-shadow-[0_0_10px_cyan]">
-          Listing Price: {ethers.utils.formatEther(listingFee)} eth
+          Listing Price: {ethers.utils.formatEther(listingFee)} ETH
     </h5>
-    <h2 className="text-center text-6xl font-black mb-8 
-                   text-blue-400 drop-shadow-[0_0_20px_cyan]">
+    <h2 className="text-center text-6xl font-black mb-8 bg-gradient-to-r from-[#1199fa] to-[#11d0fa] bg-clip-text text-transparent "
+              style={{ textShadow: '0 0 20px #11d0fa, 0 0 40px #1199fa' }}>
       Create NFT
     </h2>
 
@@ -344,7 +344,7 @@ const Create = () => {
       ) : (
         <WalletConnect />
       )}
-      <style jsx>{`
+      <style jsx global>{`
       @keyframes rainbow {
         0% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }

@@ -137,13 +137,17 @@ const Dashboard:NextPage = () => {
       {!isConnected ? (<h2 className='bg-gradient text-white p-10'>Please connect your wallet</h2>) : (<div>
       <section className='bg-gradient text-white flex w-[80vw]  mx-auto'>
         <div className='flex flex-col items-start text-xl'>
-          <h3 className='py-2 font-bold'>Address: {signer && shortenAddress(signer!)}</h3>
-          <h3 className='py-2 font-bold'>Balance: {balance} eth</h3>
+          <h3 className="text-1xl font-black mb-8 
+                   text-blue-400 drop-shadow-[0_0_10px_cyan]">Address: {signer && shortenAddress(signer!)}</h3>
+          <h3 className="text-1xl font-black mb-8 
+                   text-blue-400 drop-shadow-[0_0_10px_cyan]">Balance: {balance} ETH</h3>
         </div>
-        <div className='flex flex-col items-center justify-center ml-[10vw]'>
+        <div className='flex flex-col items-center justify-center ml-[18vw]'>
           <div className='py-4'>
-            <h2 className='className="text-center text-6xl font-black mb-8 
-                   text-blue-400 drop-shadow-[0_0_20px_cyan]'>NFT</h2>  
+            <h2 className="text-center text-6xl font-black mb-8 bg-gradient-to-r from-[#1199fa] to-[#11d0fa] bg-clip-text text-transparent "
+              style={{ textShadow: '0 0 20px #11d0fa, 0 0 40px #1199fa' }}>
+              NFT
+          </h2>  
             <hr className='bg-pink-400' />
           </div>
           <div className='flex items-center justify-center'>

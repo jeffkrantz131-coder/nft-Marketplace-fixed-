@@ -179,10 +179,10 @@ const AuctionsPage: NextPage = () => {
         <div className="relative w-[75%] mx-auto p-8 
                         bg-gradient backdrop-blur-2xl 
                         border border-none rounded-3xl shadow-[0_0_100px_rgba(0,255,255,0.15)]">
-          <h1 className="text-center text-6xl font-black mb-8 
-                   text-blue-400 drop-shadow-[0_0_20px_cyan]">
+          <h2 className="text-center text-6xl font-black mb-8 bg-gradient-to-r from-[#1199fa] to-[#11d0fa] bg-clip-text text-transparent "
+              style={{ textShadow: '0 0 20px #11d0fa, 0 0 40px #1199fa' }}>
             Active Auctions
-          </h1>
+          </h2>
           {activeAuctions.length === 0 && (
             <p className="text-center text-gray-400 col-span-full">
               No active auctions right now.
@@ -251,6 +251,7 @@ const AuctionsPage: NextPage = () => {
                     </div>
               </div>
               {/* Custom rainbow animation */}
+              
               <style jsx>{`
                 .rainbow-gradient {
                   background: linear-gradient(270deg, #ff0000, #ff9900, #ffff00, #00ff00, #00ffff, #0000ff, #9900ff);

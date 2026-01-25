@@ -142,7 +142,7 @@ const NFTDetails:NextPage = () => {
 
             <div className="flex flex-col mx-auto">
                 <div>
-                    <label className="font-bold text-pink-600">Starting Price (ETH)</label>
+                    <label className="font-bold text-blue-600">Starting Price (ETH)</label>
                   <input
                     type="number"
                     placeholder="Enter starting price"
@@ -155,7 +155,7 @@ const NFTDetails:NextPage = () => {
                 </div>
                 
                 <div className="mt-5">
-                    <label className="font-bold text-pink-600">Auction Duration (Hours)</label>
+                    <label className="font-bold text-blue-600">Auction Duration (Hour)</label>
                     <input
                     type="number"
                     placeholder="Enter duration"

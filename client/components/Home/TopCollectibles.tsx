@@ -8,7 +8,7 @@ import { fetchMarketItems, getItems, getMarketContract, getNFTContract, MarketCo
 import { IItem } from '../../interfaces'
 import { Loader } from '../common';
 
-export const TopCollectibles = () => {
+ const TopCollectibles = () => {
   const [items, setItems] = useState<IItem[] | []>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -82,18 +82,23 @@ export const TopCollectibles = () => {
                         bg-gradient backdrop-blur-2xl 
                         border border-none rounded-3xl shadow-[0_0_100px_rgba(0,255,255,0.15)] mb-[70px]">
 
-          <h2 className='text-center text-6xl font-black mb-6 
-                        text-blue-400 drop-shadow-[0_0_20px_cyan]'>Top Collectibles</h2>
+          <h2 className="text-center text-6xl font-black mb-6 bg-gradient-to-r from-[#1199fa] to-[#11d0fa] bg-clip-text text-transparent"
+              style={{ textShadow: '0 0 20px #11d0fa, 0 0 40px #1199fa' }}>
+              Top Collectibles
+          </h2>
+
           <CollectiblesMenu
             onCategoryChange={setSelectedCategory}
             onTimeChange={setSelectedTime}
           />
 
-          <NFTCardItems items={filteredNFTs} message="Connect your wallet" isLoading={isLoading}/>
+          <NFTCardItems items={filteredNFTs} message="No Cards..." isLoading={isLoading}/>
 
-          {/* <NFTCardItems items={items} message="Connect your wallet" isLoading={isLoading}/> */}
+          
         </div>
 
       )
   )
 }
+
+export default TopCollectibles;

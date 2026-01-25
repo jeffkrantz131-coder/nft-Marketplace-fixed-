@@ -83,4 +83,6 @@ body,
   animation: gradient 15s ease infinite;
 }
 
-
+.text-glow {
+  text-shadow: 0 0 20px #11d0fa, 0 0 40px #1199fa;
+}

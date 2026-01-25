@@ -13,7 +13,7 @@ const styles = {
   imageContainer: 'box-border block overflow-hidden w-[75%] bg-none opacity-1 p-0 my-0 mx-auto absolute top-0 left-0 bottom-0 right-0 rounded-[20px]',
 }
 
-export const Carousel:NextPage = () => {
+const Carousel:NextPage = () => {
   const [images] = useState([imageOne, imageTwo, imageThree, imageFour, imageFive]);
   const [currentImage, setCurrentImage] = useState(0);
   useEffect(() => {
@@ -34,3 +34,5 @@ export const Carousel:NextPage = () => {
 
   )
 }
+
+export default Carousel;

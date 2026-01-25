@@ -5,9 +5,19 @@ import { toast } from 'react-toastify';
 import { MarketContext } from '../../context';
 
 const styles = {
-  searchContainer: 'self-center relative w-full rounded-2xl p-1 bg-white',
-  icon: 'w-6 h-6 fill-blue-500 absolute top-1',
-  inputField: 'text-black ml-6 w-[90%] outline-none '
+  searchContainer: `
+    relative flex items-center w-full max-w-[400px]
+    px-3 py-2 rounded-3xl
+    bg-white/10 backdrop-blur-xl border border-white/20
+    shadow-[0_0_20px_rgba(0,255,255,0.2)]
+  `,
+  icon: `
+    w-5 h-5 text-cyan-400
+  `,
+  inputField: `
+    ml-2 w-full bg-transparent outline-none text-white
+    placeholder:text-white/50
+  `
 }
 
 export const NavSearch = () => {

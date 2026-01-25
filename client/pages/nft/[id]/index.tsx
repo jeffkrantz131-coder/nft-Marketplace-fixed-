@@ -5,7 +5,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import React,{ useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Loader, TransactionProgress } from "../../../components/common";
 import { IItem, MarketContext, generateItem, getMarketContract, getNFTContract } from "../../../context";
@@ -193,7 +193,7 @@ return (
           </div>
 
   {/* Buy Button if not owner */}
-  {!nft.sold && nft.seller !== signer &&
+  {!nft.sold && nft.creator !== signer &&
     (!txWait ? (
       <button
         onClick={buyNft}
@@ -259,7 +259,7 @@ return (
       )}
 
     {/* Tailwind + global CSS classes */}
-    <style global jsx>{`
+    <style jsx >{`
       @keyframes rainbowBorder {
         0% { border: 4px solid red; }
         16% { border: 4px solid orange; }
