@@ -12,11 +12,14 @@
     "@heroicons/react": "^1.0.6",
     "axios": "^0.27.2",
     "ethers": "^5.6.9",
+    "framer-motion": "^12.29.0",
     "next": "12.2.0",
     "nft.storage": "^7.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-parallax-tilt": "^1.7.316",
     "react-toastify": "^9.0.7",
+    "styled-jsx": "^5.1.7",
     "web3modal": "^1.9.8"
   },
   "devDependencies": {

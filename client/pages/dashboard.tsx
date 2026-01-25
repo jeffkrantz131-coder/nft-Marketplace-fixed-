@@ -17,14 +17,14 @@ const NFTButtonGroup:ButtonGroupItemType[] = [
 ]
 interface INFTComponent {
   NFTs: IItem[],
-  title: string,
+  // title: string,
   isLoading: boolean
 }
 
-const NFTS:FC<INFTComponent> = ({ NFTs, title, isLoading }) => {
+const NFTS:FC<INFTComponent> = ({ NFTs,  isLoading }) => {
   return (
     <div>
-      <h4 className='text-xl text-blue-500'>{title}</h4>
+      {/* <h4 className='text-xl text-blue-500'>{title}</h4> */}
        { <NFTCardItems items={NFTs ? NFTs : []} isLoading={isLoading} /> }
     </div>  
   )
@@ -39,7 +39,7 @@ const Dashboard:NextPage = () => {
   const [currentNFTItems, setCurrentNFTItems] = useState<IItem[]>([]);
   const [NFTItems, setNFTItems] = useState<IItem[]>([]);
   const [shoppingNFTItems, setShoppingNFTItems] = useState<IItem[] | null>(null);
-  const [title, setTitle] = useState('My Creations');
+  // const [title, setTitle] = useState('My Creations');
   
   useEffect(() =>{
     if(!isConnected) return;
@@ -114,15 +114,15 @@ const Dashboard:NextPage = () => {
     switch(item.id) {
       case 'creation-button-1':
         setCurrentNFTItems(NFTItems);
-        setTitle('My Creations');
+        // setTitle('My Creations');
         break;
       case 'sale-button-2':
         setCurrentNFTItems(getMySales());
-        setTitle('My Sales');
+        // setTitle('My Sales');
         break;
       default:
         getOwnerNFTs();
-        setTitle('My Shopping')    
+        // setTitle('My Shopping')    
     }
   }
   
@@ -135,14 +135,19 @@ const Dashboard:NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {!isConnected ? (<h2 className='bg-gradient text-white p-10'>Please connect your wallet</h2>) : (<div>
-      <section className='bg-gradient text-white grid grid-cols-[30%_70%] w-[80vw] items-center justify-center my-0 mx-auto'>
-        <div className='flex flex-col items-center justify-evenly text-xl'>
-          <h3 className='py-2'>Address: {signer && shortenAddress(signer!)}</h3>
-          <h3 className='py-2'>Balance: {balance} eth</h3>
+      <section className='bg-gradient text-white flex w-[80vw]  mx-auto'>
+        <div className='flex flex-col items-start text-xl'>
+          <h3 className="text-1xl font-black mb-8 
+                   text-blue-400 drop-shadow-[0_0_10px_cyan]">Address: {signer && shortenAddress(signer!)}</h3>
+          <h3 className="text-1xl font-black mb-8 
+                   text-blue-400 drop-shadow-[0_0_10px_cyan]">Balance: {balance} ETH</h3>
         </div>
-        <div className='flex flex-col items-center justify-center'>
+        <div className='flex flex-col items-center justify-center ml-[18vw]'>
           <div className='py-4'>
-            <h2 className='text-3xl text-pink-600 text-center py-3'>NFT</h2>  
+            <h2 className="text-center text-6xl font-black mb-8 bg-gradient-to-r from-[#1199fa] to-[#11d0fa] bg-clip-text text-transparent "
+              style={{ textShadow: '0 0 20px #11d0fa, 0 0 40px #1199fa' }}>
+              NFT
+          </h2>  
             <hr className='bg-pink-400' />
           </div>
           <div className='flex items-center justify-center'>
@@ -150,8 +155,11 @@ const Dashboard:NextPage = () => {
           </div>
         </div>
       </section>
-      <div className='bg-gradient text-white flex items-center justify-center pt-5'>
-      { isLoading ? <Loader className='w-[200px] h-[200px]' size={300} />  : <NFTS NFTs={currentNFTItems} title={title} isLoading={isLoading}/>  }
+
+      <div className='relative w-[75%] mx-auto p-8 
+                        bg-gradient backdrop-blur-2xl 
+                        border border-none rounded-3xl shadow-[0_0_200px_rgba(0,255,255,0.15)] mt-3'>
+      { isLoading ? <Loader className='w-[200px] h-[200px]' size={300} />  : <NFTS NFTs={currentNFTItems}  isLoading={isLoading}/>  }
       </div>
       </div>
       )}

@@ -10,6 +10,7 @@ export interface IItem {
   name: string;
   description: string;
   createAt: string;
+  category?: string;
 }
 
 export interface INFTToken {
@@ -23,4 +24,5 @@ export interface IMetaData {
   name: string;
   description: string;
   image: string;
+  category: string;
 }

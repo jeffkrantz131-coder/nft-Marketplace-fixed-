@@ -50,3 +50,39 @@ body,
     opacity: 1;
   }
 }
+
+@keyframes rainbowGlow {
+  0% { box-shadow: 0 0 10px red; }
+  16% { box-shadow: 0 0 10px orange; }
+  32% { box-shadow: 0 0 10px yellow; }
+  48% { box-shadow: 0 0 10px green; }
+  64% { box-shadow: 0 0 10px blue; }
+  80% { box-shadow: 0 0 10px indigo; }
+  100% { box-shadow: 0 0 10px violet; }
+}
+
+.animate-rainbow-neon {
+  animation: rainbowGlow 3s infinite linear;
+  border-radius: 1rem;
+  pointer-events: none;
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #ff0000, #ff9900, #ffff00, #00ff00, #00ffff, #0000ff, #9900ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient {
+  animation: gradient 15s ease infinite;
+}
+
+.text-glow {
+  text-shadow: 0 0 20px #11d0fa, 0 0 40px #1199fa;
+}

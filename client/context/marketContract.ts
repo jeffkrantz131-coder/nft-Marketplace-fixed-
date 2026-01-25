@@ -80,7 +80,7 @@ export const generateItem = async (
     const ipfsUri = tokenUri.replace("ipfs://", "https://ipfs.io/ipfs/");
 
     const metaResponse = await axios.get(ipfsUri);
-    const { name, description, image }: IMetaData = metaResponse.data;
+    const { name, description, image, category }: IMetaData = metaResponse.data;
 
     // Safety check for image
     const imageUrl = image ? `https://ipfs.io/ipfs/${image.replace("ipfs://", "")}` : "";
@@ -97,6 +97,7 @@ export const generateItem = async (
       description: description || "",
       name: name || "",
       createAt: item.createAt.toString(),
+      category: category || "Unknown",
     };
   } catch (err) {
     console.error("Error generating item for tokenId:", item.tokenId, err);
