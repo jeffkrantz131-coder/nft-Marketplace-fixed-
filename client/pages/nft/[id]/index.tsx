@@ -167,12 +167,12 @@ return (
           {/* NFT Details */}
           <div className="flex flex-col justify-start gap-6 mx-auto">           
             {/* NFT Name & Price */}
-            <h2 className="text-3xl font-bold">{nft.name}</h2>
+            <h2 className="text-3xl font-bold">Name: {nft.name}</h2>
             <h2 className="text-4xl font-extrabold text-gradient">
-              $ {nft.price} ETH
+              Price: {nft.price} ETH
             </h2>
-            <h4 className="text-lg text-gray-400">{getFormatDate(nft.createAt)}</h4>
-            <h4 className="text-lg text-gray-400">{shortenAddress(nft.creator)}</h4>
+            <h4 className="text-lg text-gray-400">Created at: {getFormatDate(nft.createAt)}</h4>
+            <h4 className="text-lg text-gray-400">Creator: {shortenAddress(nft.creator)}</h4>
             
 
             {/* Buttons Section */}

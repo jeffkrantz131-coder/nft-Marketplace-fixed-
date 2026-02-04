@@ -142,7 +142,7 @@ const Dashboard:NextPage = () => {
           <h3 className="text-1xl font-black mb-8 
                    text-blue-400 drop-shadow-[0_0_10px_cyan]">Balance: {balance} ETH</h3>
         </div>
-        <div className='flex flex-col items-center justify-center ml-[18vw]'>
+        <div className='flex flex-col items-center justify-center ml-[14vw]'>
           <div className='py-4'>
             <h2 className="text-center text-6xl font-black mb-8 bg-gradient-to-r from-[#1199fa] to-[#11d0fa] bg-clip-text text-transparent "
               style={{ textShadow: '0 0 20px #11d0fa, 0 0 40px #1199fa' }}>
