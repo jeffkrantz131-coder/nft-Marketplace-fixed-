@@ -289,7 +289,7 @@ const Create = () => {
       </div>
 
       {/* Right Image Panel */}
-      <div className="flex flex-col h-full items-center"> {/* same height as left */}
+      <div className="flex flex-col h-full items-center">
         <div className="relative w-[300px] h-full rounded-2xl overflow-hidden flex flex-col">
           {imageUrl ? (
             <>
@@ -299,7 +299,7 @@ const Create = () => {
                 unoptimized
                 alt="NFT Preview"
                 className="rounded-2xl z-10"
-                layout="responsive"
+                layout="fill"
                 width={300}
                 height={300}
                 placeholder={"blur"}
@@ -344,7 +344,7 @@ const Create = () => {
       ) : (
         <WalletConnect />
       )}
-      <style jsx global>{`
+      {/* <style jsx global>{`
       @keyframes rainbow {
         0% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
@@ -362,7 +362,7 @@ const Create = () => {
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
       }
-    `}</style>
+    `}</style> */}
     </div>
   );
 };

@@ -185,10 +185,11 @@ const AuctionsPage: NextPage = () => {
           </h2>
           {activeAuctions.length === 0 && (
             <p className="text-center text-gray-400 col-span-full">
-              No active auctions right now.
+              No active auctions right now. 
             </p>
           )}
 
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 justify-items-center">
           {activeAuctions.map(a => {
             const ended = Date.now() / 1000 > a.endTime;
             const isCreator:boolean = a.creator.toLowerCase() === signerAddress.toLowerCase();
@@ -319,6 +320,7 @@ const AuctionsPage: NextPage = () => {
               </div>
             );
           })}
+          </div>
         </div>
         
       )}

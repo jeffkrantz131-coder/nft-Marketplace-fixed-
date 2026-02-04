@@ -2,7 +2,6 @@ import { ethers } from "ethers";
 import { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { ExternalLinkIcon, XIcon } from '@heroicons/react/solid'
@@ -142,7 +141,8 @@ const NFTDetails:NextPage = () => {
 
             <div className="flex flex-col mx-auto">
                 <div>
-                    <label className="font-bold text-blue-600">Starting Price (ETH)</label>
+                    <label className="text-1xl font-black mb-8 
+                                      text-blue-400 drop-shadow-[0_0_10px_cyan]">Starting Price (ETH)</label>
                   <input
                     type="number"
                     placeholder="Enter starting price"
@@ -155,7 +155,8 @@ const NFTDetails:NextPage = () => {
                 </div>
                 
                 <div className="mt-5">
-                    <label className="font-bold text-blue-600">Auction Duration (Hour)</label>
+                    <label className="text-1xl font-black mb-8 
+                                      text-blue-400 drop-shadow-[0_0_10px_cyan]">Auction Duration (Hour)</label>
                     <input
                     type="number"
                     placeholder="Enter duration"
@@ -167,25 +168,25 @@ const NFTDetails:NextPage = () => {
                     />
                 </div>
                 {/* Tailwind + global CSS classes */}
-    <style global jsx>{`
-      @keyframes rainbowBorder {
-        0% { border: 4px solid red; }
-        16% { border: 4px solid orange; }
-        32% { border: 4px solid yellow; }
-        48% { border: 4px solid green; }
-        64% { border: 4px solid blue; }
-        80% { border: 4px solid indigo; }
-        100% { border: 4px solid violet; }
-      }
-      .animate-rainbow-border {
-        animation: rainbowBorder 4s linear infinite;
-      }
-      .text-gradient {
-        background: linear-gradient(90deg, #ff0000, #ff9900, #ffff00, #00ff00, #00ffff, #0000ff, #9900ff);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-    `}</style>
+                <style global jsx>{`
+                  @keyframes rainbowBorder {
+                    0% { border: 4px solid red; }
+                    16% { border: 4px solid orange; }
+                    32% { border: 4px solid yellow; }
+                    48% { border: 4px solid green; }
+                    64% { border: 4px solid blue; }
+                    80% { border: 4px solid indigo; }
+                    100% { border: 4px solid violet; }
+                  }
+                  .animate-rainbow-border {
+                    animation: rainbowBorder 4s linear infinite;
+                  }
+                  .text-gradient {
+                    background: linear-gradient(90deg, #ff0000, #ff9900, #ffff00, #00ff00, #00ffff, #0000ff, #9900ff);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                  }
+                `}</style>
 
                 <button
                     className="bg-gradient-to-r from-[#1199fa] to-[#11d0fa] rounded-3xl p-2 w-full text-black font-bold hover:opacity-90 mt-[110px]"

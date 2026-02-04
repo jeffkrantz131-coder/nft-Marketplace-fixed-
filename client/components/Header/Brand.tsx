@@ -3,13 +3,13 @@ import Link from 'next/link'
 import React from 'react'
 
 const styles = {
-  brand: 'flex items-center justify-center cursor-pointer',
-  icon: 'w-[15em] h-[2em]'
+  brand: 'flex items-center justify-center',
+  icon: 'w-[13em] h-[2em]'
 }
 
 export const Brand:NextPage = () => {
   return (
-    <Link href='/'>
+    
     <div className={styles.brand}>
      <i>
       <svg width="208" height="28" viewBox="0 0 208 28" fill="none" className={styles.icon}>
@@ -26,6 +26,6 @@ export const Brand:NextPage = () => {
       </svg>
      </i>
     </div>
-    </Link>
+    
   )
 }

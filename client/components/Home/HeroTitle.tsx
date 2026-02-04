@@ -10,8 +10,8 @@ export const HeroTitle = () => {
   return (
       <h1 className={styles.container}>
         <span className={`${styles.title} text-glow`}>
-  Welcome!
-</span>
+          Discover, Collect & Sell NFTs
+        </span>
       </h1>
   )
 }

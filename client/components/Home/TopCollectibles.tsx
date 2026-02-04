@@ -1,7 +1,4 @@
-
-
 import { ethers } from 'ethers';
-import { motion } from "framer-motion";
 import React, { useContext, useEffect, useState } from 'react'
 import { CollectiblesMenu, NFTCardItems } from '../../components'
 import { fetchMarketItems, getItems, getMarketContract, getNFTContract, MarketContext } from '../../context';
@@ -78,11 +75,9 @@ import { Loader } from '../common';
   return (
       isLoading ? (
         <Loader className='relative w-[150px] h-[150px] bg-gradient my-0 mx-auto' size={150} /> ) : (
-          <div className="relative w-[75%] mx-auto p-8 
-                        bg-gradient backdrop-blur-2xl 
+          <div className="relative w-[75%] mx-auto p-8 bg-gradient backdrop-blur-2xl 
                         border border-none rounded-3xl shadow-[0_0_100px_rgba(0,255,255,0.15)] mb-[70px]">
-
-          <h2 className="text-center text-6xl font-black mb-6 bg-gradient-to-r from-[#1199fa] to-[#11d0fa] bg-clip-text text-transparent"
+          <h2 className="text-center text-6xl font-black mb-6 bg-gradient-to-r from-[#1199fa] to-[#11d0fa] bg-clip-text text-transparent "
               style={{ textShadow: '0 0 20px #11d0fa, 0 0 40px #1199fa' }}>
               Top Collectibles
           </h2>
